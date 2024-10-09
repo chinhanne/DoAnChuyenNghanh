@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: "jdbc:mysql://localhost:3306/websiteBanDoCongNghe"
+    driverClassName: "com.mysql.cj.jdbc.Driver"
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  signerKey: "IqD5dWsST/bP7RpDrB0x1mhr+nZdexZeOGrVnWWyw9q4MoomQ1zwm/z+qLAyCK4K"
+  valid-duration: 20
+  refreshable-duration: 120
