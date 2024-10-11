@@ -1,11 +1,11 @@
 package com.dacn.WebsiteBanDoCongNghe.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Setter
 @Getter
@@ -18,8 +18,32 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
     String name;
+    double price;
+    String description;
+    LocalDate dateCreated;
+    LocalDate dateUpdated;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    Category category;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    List<Image> images;
 
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    Brand brand;
+
+//    Khởi tạo thời gian tạo sản phẩm
+    @PrePersist
+    public void prePersist() {
+        this.dateCreated = LocalDate.now();
+        this.dateUpdated = LocalDate.now();
+    }
+
+//    Khởi tạo thời gian update sản phẩm
+    @PreUpdate
+    public void preUpdate() {
+        this.dateUpdated = LocalDate.now();
+    }
 }

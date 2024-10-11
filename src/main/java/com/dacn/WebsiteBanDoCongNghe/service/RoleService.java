@@ -8,6 +8,7 @@ import com.dacn.WebsiteBanDoCongNghe.reponsitory.RoleReponsitory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,17 +21,20 @@ public class RoleService {
     RoleMapper roleMapper;
 
 //    Create role
+    @PreAuthorize("hasRole('ADMIN')")
     public RoleResponse createdRole(RoleRequest request){
         Role role = roleMapper.toRole(request);
         return roleMapper.toRoleResponse(roleReponsitory.save(role));
     }
 
 //    Get all role
+    @PreAuthorize("hasRole('ADMIN')")
     public List<RoleResponse> getAll(){
         return roleReponsitory.findAll().stream().map(roleMapper::toRoleResponse).toList();
     }
 
 //    Delete role
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteRole(String role){
         roleReponsitory.deleteById(role);
     }

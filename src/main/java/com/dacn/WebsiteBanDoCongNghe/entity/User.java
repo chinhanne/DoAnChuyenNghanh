@@ -1,6 +1,8 @@
 package com.dacn.WebsiteBanDoCongNghe.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -27,6 +29,11 @@ public class User {
     String lastname;
     String email;
     LocalDate dob;
+    @Min(value = 0, message = "MIN_GENDER")
+    @Max(value = 1, message = "MAX_GENDER")
+    Long gender;
+    String address;
+    String numberPhone;
     @ManyToMany
     Set<Role> roles;
 }
