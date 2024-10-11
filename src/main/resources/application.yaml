@@ -14,5 +14,8 @@ spring:
 
 jwt:
   signerKey: "IqD5dWsST/bP7RpDrB0x1mhr+nZdexZeOGrVnWWyw9q4MoomQ1zwm/z+qLAyCK4K"
-  valid-duration: 20
-  refreshable-duration: 120
+  valid-duration: 3600
+  refreshable-duration: 360000
+
+file:
+  upload-dir: src/main/resources/static/uploads
