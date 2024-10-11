@@ -1,9 +1,7 @@
 package com.dacn.WebsiteBanDoCongNghe.dto.request;
 
 import com.dacn.WebsiteBanDoCongNghe.validator.DobConstraint;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -29,4 +27,11 @@ public class UserCreationRequest {
     String email;
     @DobConstraint(min = 18, message = "INVALID_DOB")
     LocalDate dob;
+    @Min(value = 0, message = "MIN_GENDER")
+    @Max(value = 1, message = "MAX_GENDER")
+    Long gender;
+    @NotBlank(message = "ADDRESS_NOT_NULL")
+    String address;
+    @NotBlank(message = "NUMBERPHONE_NOT_NULL")
+    String numberPhone;
 }

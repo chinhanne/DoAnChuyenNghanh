@@ -25,7 +25,21 @@ public enum ErrorCode {
     UNAUTHENTICATED(1010, "Lỗi không có quyền xác thực",HttpStatus.UNAUTHORIZED), // 401
     UNAUTHORIZED(1011, "Lỗi không được phép truy cập",HttpStatus.FORBIDDEN), // 403
     ROLES_NOT_EXISTED(1012,"Roles không tồn tại",HttpStatus.BAD_REQUEST),
-    INVALID_DOB(1013,"Người dùng phải lớn hơn {min} tuổi",HttpStatus.BAD_REQUEST)
+    INVALID_DOB(1013,"Người dùng phải lớn hơn {min} tuổi",HttpStatus.BAD_REQUEST),
+    CATEGORY_NOT_EXISTED(1014,"Thể loại không tồn tại",HttpStatus.BAD_REQUEST),
+    PRODUCT_NOT_EXISTED(1015,"Sản phẩm không tồn tại",HttpStatus.BAD_REQUEST),
+    CATEGORY_NAME_NOT_NULL(1016,"Tên thể loại không được bỏ trống", HttpStatus.BAD_REQUEST),
+    PRODUCT_NAME_NOT_NULL(1017,"Tên sản phẩm không được bỏ trống", HttpStatus.BAD_REQUEST),
+    ADDRESS_NOT_NULL(1018,"Địa chỉ không được bỏ trống", HttpStatus.BAD_REQUEST),
+    NUMBERPHONE_NOT_NULL(1019,"Số điện thoại không được bỏ trống", HttpStatus.BAD_REQUEST),
+    NAME_CATEGORY_EXISTED(1020,"Thể loại đã tồn tại", HttpStatus.BAD_REQUEST),
+    PRICE_PRODUCT_NOT_NULL(1021,"Giá sản phẩm không được bỏ trống và phải lớn hơn 0", HttpStatus.BAD_REQUEST),
+    MIN_GENDER(1022,"vGiá trị gender phải là 0 hoặc 1", HttpStatus.BAD_REQUEST),
+    MAX_GENDER(1023,"Giá trị gender phải là 0 hoặc 1", HttpStatus.BAD_REQUEST),
+    BRAND_NAME_NOT_NULL(1024,"Tên hãng không được bỏ trống", HttpStatus.BAD_REQUEST),
+    BRAND_NOT_EXISTED(1025,"Hãng không tồn tại",HttpStatus.BAD_REQUEST),
+    NAME_BRAND_EXISTED(1026,"Hãng đã tồn tại", HttpStatus.BAD_REQUEST)
+
     ;
 
     int code;

@@ -25,7 +25,7 @@ public class UserController {
 
 //    Create User
     @PostMapping
-    ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request){
+    public ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request){
         return ApiResponse.<UserResponse>builder()
                 .result(userService.createUser(request))
                 .build();
@@ -33,7 +33,7 @@ public class UserController {
 
     //    Get myInfo
     @GetMapping("/myInfo")
-    ApiResponse<UserResponse> getMyInfo(){
+    public ApiResponse<UserResponse> getMyInfo(){
         return ApiResponse.<UserResponse>builder()
                 .result(userService.getMyInfo())
                 .build();
@@ -41,7 +41,7 @@ public class UserController {
 
 //    Get all user
     @GetMapping
-    ApiResponse<List<UserResponse>> getAllUser(){
+    public ApiResponse<List<UserResponse>> getAllUser(){
         return ApiResponse.<List<UserResponse>>builder()
                 .result(userService.getAllUser())
                 .build();
@@ -49,7 +49,7 @@ public class UserController {
 
 //    Get User by id
     @GetMapping("/{id}")
-    ApiResponse<UserResponse> getUserById(@PathVariable String id){
+    public ApiResponse<UserResponse> getUserById(@PathVariable String id){
         return ApiResponse.<UserResponse>builder()
                 .result(userService.getUserById(id))
                 .build();
@@ -57,7 +57,7 @@ public class UserController {
 
 //    Update User
     @PutMapping("/{id}")
-    ApiResponse<UserResponse> updateUser(@PathVariable String id, @RequestBody UserUpdateRequest request){
+    public ApiResponse<UserResponse> updateUser(@PathVariable String id, @RequestBody @Valid UserUpdateRequest request){
         return ApiResponse.<UserResponse>builder()
                 .result(userService.updateUser(id,request))
                 .build();
@@ -65,7 +65,7 @@ public class UserController {
 
 //    Update myInfo
     @PutMapping("/myInfo")
-    ApiResponse<UserResponse> updateMyInfo(@RequestBody UserUpdateRequest request){
+    public ApiResponse<UserResponse> updateMyInfo(@RequestBody @Valid UserUpdateRequest request){
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         return ApiResponse.<UserResponse>builder()
                 .result(userService.updateMyInfo(name,request))
@@ -74,7 +74,7 @@ public class UserController {
 
 //    Delete User
     @DeleteMapping("/{id}")
-    ApiResponse<String> deleteUser(@PathVariable String id){
+    public ApiResponse<String> deleteUser(@PathVariable String id){
         userService.deleteUser(id);
         return ApiResponse.<String>builder()
                 .result("Người dùng đã được xóa")

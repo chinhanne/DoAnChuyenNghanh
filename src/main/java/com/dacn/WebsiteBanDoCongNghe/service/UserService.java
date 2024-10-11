@@ -57,6 +57,7 @@ public class UserService {
 
 
     //    Get myInfo
+    @PostAuthorize("returnObject.username == authentication.name")
     public UserResponse getMyInfo(){
         var name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userReponsitory.findByUsername(name).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
