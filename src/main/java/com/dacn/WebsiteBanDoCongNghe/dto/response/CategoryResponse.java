@@ -3,6 +3,8 @@ package com.dacn.WebsiteBanDoCongNghe.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -10,4 +12,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryResponse {
     String name;
+    LocalDateTime dateCreated;
+    LocalDateTime dateUpdated;
 }

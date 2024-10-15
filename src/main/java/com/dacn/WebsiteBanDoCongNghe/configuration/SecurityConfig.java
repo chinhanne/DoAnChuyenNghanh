@@ -25,7 +25,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 //  Cấu hình quyền cho người dùng
     private final String[] PUBLIC_ENDPOINTS = {"/users","/auth/token","/auth/introspect","/auth/logout","/auth/refresh"};
-    private final String[] PUBLIC_ENDPOINTS_GET = {"/product/search"};
+    private final String[] PUBLIC_ENDPOINTS_GET = {"/product/search","/comment/product/{productId}","/comment/with-child/{id}","/comment/{id}"};
 
     @Autowired
     private CustomJwtDecoder customJwtDecoder;
