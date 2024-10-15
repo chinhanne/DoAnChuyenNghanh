@@ -38,7 +38,12 @@ public enum ErrorCode {
     MAX_GENDER(1023,"Giá trị gender phải là 0 hoặc 1", HttpStatus.BAD_REQUEST),
     BRAND_NAME_NOT_NULL(1024,"Tên hãng không được bỏ trống", HttpStatus.BAD_REQUEST),
     BRAND_NOT_EXISTED(1025,"Hãng không tồn tại",HttpStatus.BAD_REQUEST),
-    NAME_BRAND_EXISTED(1026,"Hãng đã tồn tại", HttpStatus.BAD_REQUEST)
+    NAME_BRAND_EXISTED(1026,"Hãng đã tồn tại", HttpStatus.BAD_REQUEST),
+    PRODUCT_ID_NOT_NULL(1027,"Id sản phẩm không được bỏ trống", HttpStatus.BAD_REQUEST),
+    USER_ID_NOT_NULL(1028,"Id người dùng không được bỏ trống", HttpStatus.BAD_REQUEST),
+    CONTENT_COMMENT_NOT_NULL(1029,"Nội dung comment không được bỏ trống", HttpStatus.BAD_REQUEST),
+    PARENT_COMMENT_NOT_FOUND(1030,"Comment cha không tồn tại", HttpStatus.BAD_REQUEST),
+    COMMENT_NOT_EXISTED(1031,"Bình luận không tồn tại",HttpStatus.BAD_REQUEST),
 
     ;
 

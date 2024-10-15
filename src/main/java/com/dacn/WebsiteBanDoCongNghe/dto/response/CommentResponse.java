@@ -4,15 +4,20 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class BrandResponse {
-    String name;
-    String description;
+public class CommentResponse {
+    String productName;
+    String userName;
+    String content;
+    List<ChildCommentResponse> childComments;
+    boolean display;
     LocalDateTime dateCreated;
     LocalDateTime dateUpdated;
 }

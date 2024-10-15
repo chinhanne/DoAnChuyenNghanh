@@ -3,8 +3,8 @@ package com.dacn.WebsiteBanDoCongNghe.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -13,14 +13,27 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Brand {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(name = "name", unique = true, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_unicode_ci")
-    String name;
-    String description;
 
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    Product product;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User user;
+    @ManyToOne(optional = true) // Khong bat buoc co
+    @JoinColumn(name = "parent_comment_id")
+    Comment parentComment;
+
+//    orphanRemoval = true: Bảo đảm rằng khi một comment con bị loại bỏ khỏi danh sách childComments, nó sẽ bị xóa khỏi cơ sở dữ liệu.
+    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Comment> childComments; // Danh sách comment con
+
+    String content;
+    boolean display;
     LocalDateTime dateCreated;
     LocalDateTime dateUpdated;
 
@@ -29,6 +42,7 @@ public class Brand {
     public void prePersist() {
         this.dateCreated = LocalDateTime.now();
         this.dateUpdated = LocalDateTime.now();
+        this.display = true;
     }
 
     //    Khởi tạo thời gian update comment

@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -33,6 +34,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "brand_id")
     Brand brand;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    List<Comment> comments = new ArrayList<>();
 
 //    Khởi tạo thời gian tạo sản phẩm
     @PrePersist
