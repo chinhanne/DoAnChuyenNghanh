@@ -23,7 +23,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 public class SecurityConfig {
 
     // Cấu hình quyền cho người dùng
-    private final String[] PUBLIC_ENDPOINTS = {"/users", "/auth/token", "/auth/introspect", "/auth/logout", "/auth/refresh","/auth/register"};
+    private final String[] PUBLIC_ENDPOINTS = {"/users", "/auth/token", "/auth/introspect", "/auth/logout", "/auth/refresh",};
     private final String[] PUBLIC_ENDPOINTS_GET = {"/product/search"};
 
     @Autowired
@@ -50,10 +50,12 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("http://localhost:3001"); // Cho phép origin của frontend
+        corsConfiguration.addAllowedOrigin("http://localhost:3000"); // Cho phép origin của frontend
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.setAllowCredentials(true); // Cho phép thông tin đăng nhập nếu cần
+
+
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration); // Áp dụng cấu hình CORS cho tất cả các endpoint

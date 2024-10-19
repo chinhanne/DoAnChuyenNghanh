@@ -1,9 +1,9 @@
 package com.dacn.WebsiteBanDoCongNghe.configuration;
 
-
 import com.dacn.WebsiteBanDoCongNghe.dto.request.IntrospectRequest;
 import com.dacn.WebsiteBanDoCongNghe.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -15,41 +15,40 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.text.ParseException;
-import java.util.Objects;
 
 @Component
 public class CustomJwtDecoder implements JwtDecoder {
+
     @Value("${jwt.signerKey}")
     private String signerKey;
 
     @Autowired
     private AuthenticationService authenticationService;
 
-    private NimbusJwtDecoder nimbusJwtDecoder = null;
+    private NimbusJwtDecoder nimbusJwtDecoder;
+
+    @PostConstruct
+    public void init() {
+        SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), "HS512");
+        nimbusJwtDecoder = NimbusJwtDecoder.withSecretKey(secretKeySpec)
+                .macAlgorithm(MacAlgorithm.HS512)
+                .build();
+    }
 
     @Override
     public Jwt decode(String token) throws JwtException {
-
-//        Gọi  intropect để kiểm tra tính hợp lệ của token
-        try{
+        // Gọi introspect để kiểm tra tính hợp lệ của token
+        try {
             var response = authenticationService.introspect(IntrospectRequest.builder()
                     .token(token)
                     .build());
-            if(!response.isValid()){
+            if (!response.isValid()) {
                 throw new JwtException("Token không hợp lệ");
             }
-        }catch (JOSEException | ParseException e){
-            throw new JwtException(e.getMessage());
+        } catch (JOSEException | ParseException e) {
+            throw new JwtException("Token kiểm tra thất bại: " + e.getMessage(), e);
         }
 
-//        Nếu nimbusJwtDecoder rỗng(chưa được tạo) thì khởi tạo nó với khóa và thuật toán HS512
-        if(Objects.isNull(nimbusJwtDecoder)){
-            SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(),"HS512");
-            nimbusJwtDecoder =NimbusJwtDecoder.withSecretKey(secretKeySpec)
-                    .macAlgorithm(MacAlgorithm.HS512)
-                    .build();
-
-        }
         return nimbusJwtDecoder.decode(token);
     }
 }

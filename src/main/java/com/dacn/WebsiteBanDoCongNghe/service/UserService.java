@@ -19,6 +19,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +38,9 @@ public class UserService {
     PasswordEncoder passwordEncoder;
 
 //    Create User
-    public UserResponse createUser(UserCreationRequest request){
+@Transactional
+
+public UserResponse createUser(UserCreationRequest request){
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
