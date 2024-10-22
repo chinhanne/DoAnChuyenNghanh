@@ -8,6 +8,7 @@ import com.dacn.WebsiteBanDoCongNghe.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +21,9 @@ public interface ProductMapper {
     @Mapping(source = "category.name", target = "categoryName")
     @Mapping(source = "brand.name", target = "brandName")
     ProductResponse toProductResponse(Product product);
+
+    @Mapping(target = "numberPhone", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+
     void toUpdateProduct(@MappingTarget Product product, ProductUpdatedRequest request);
 
 //    Chuyển danh sách ảnh thành danh sách đường dẫn

@@ -36,7 +36,7 @@ public class User {
     Long gender;
     String address;
     String numberPhone;
-
+    String image;
     @ManyToMany
     Set<Role> roles;
 

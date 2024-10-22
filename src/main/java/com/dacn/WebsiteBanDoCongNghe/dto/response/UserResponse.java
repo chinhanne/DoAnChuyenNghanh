@@ -12,7 +12,6 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
-    String id;
     String username;
     String firstname;
     String lastname;
@@ -21,5 +20,6 @@ public class UserResponse {
     Long gender;
     String address;
     String numberPhone;
+    String image;
     Set<RoleResponse> roles;
 }

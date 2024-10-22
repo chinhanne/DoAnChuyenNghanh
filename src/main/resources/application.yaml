@@ -19,3 +19,13 @@ jwt:
 
 file:
   upload-dir: src/main/resources/static/uploads
+
+payment:
+  vnPay:
+    url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+    returnUrl: "http://localhost:8080/payment/vn-pay-callback"
+    tmnCode: "22556AE7"
+    secretKey: "0BMX7MPJWQ3P3LIL0QV6AEXTM5RQNOU8"
+    version: 2.1.0
+    command: "pay"
+    orderType: "other"
