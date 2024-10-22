@@ -12,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -25,9 +27,10 @@ public class UserController {
 
 //    Create User
     @PostMapping
-    public ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request){
+    public ApiResponse<UserResponse> createUser(@ModelAttribute @Valid UserCreationRequest request,
+                                                @RequestParam MultipartFile imageFile) throws IOException {
         return ApiResponse.<UserResponse>builder()
-                .result(userService.createUser(request))
+                .result(userService.createUser(request,imageFile))
                 .build();
     }
 
@@ -57,18 +60,21 @@ public class UserController {
 
 //    Update User
     @PutMapping("/{id}")
-    public ApiResponse<UserResponse> updateUser(@PathVariable String id, @RequestBody @Valid UserUpdateRequest request){
+    public ApiResponse<UserResponse> updateUser(@PathVariable String id,
+                                                @ModelAttribute @Valid UserUpdateRequest request,
+                                                @RequestParam(required = false) MultipartFile image) throws IOException {
         return ApiResponse.<UserResponse>builder()
-                .result(userService.updateUser(id,request))
+                .result(userService.updateUser(id,request,image))
                 .build();
     }
 
 //    Update myInfo
     @PutMapping("/myInfo")
-    public ApiResponse<UserResponse> updateMyInfo(@RequestBody @Valid UserUpdateRequest request){
+    public ApiResponse<UserResponse> updateMyInfo(@ModelAttribute @Valid UserUpdateRequest request,
+                                                  @RequestParam(required = false) MultipartFile image) throws IOException{
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         return ApiResponse.<UserResponse>builder()
-                .result(userService.updateMyInfo(name,request))
+                .result(userService.updateMyInfo(name,request,image))
                 .build();
     }
 

@@ -25,7 +25,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 //  Cấu hình quyền cho người dùng
     private final String[] PUBLIC_ENDPOINTS = {"/users","/auth/token","/auth/introspect","/auth/logout","/auth/refresh"};
-    private final String[] PUBLIC_ENDPOINTS_GET = {"/product/search","/comment/product/{productId}","/comment/with-child/{id}","/comment/{id}"};
+    private final String[] PUBLIC_ENDPOINTS_GET = {"/product/search","/comment/product/{productId}","/comment/with-child/{id}","/comment/{id}","/payment/vn-pay-callback","/payment/vn-pay"};
 
     @Autowired
     private CustomJwtDecoder customJwtDecoder;
@@ -57,7 +57,6 @@ public class SecurityConfig {
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
     }
-
 
     @Bean
     PasswordEncoder passwordEncoder(){

@@ -6,7 +6,9 @@ import com.dacn.WebsiteBanDoCongNghe.dto.response.CategoryResponse;
 import com.dacn.WebsiteBanDoCongNghe.entity.Category;
 import com.dacn.WebsiteBanDoCongNghe.entity.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {

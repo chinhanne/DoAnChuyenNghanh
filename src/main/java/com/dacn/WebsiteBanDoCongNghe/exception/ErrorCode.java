@@ -34,7 +34,7 @@ public enum ErrorCode {
     NUMBERPHONE_NOT_NULL(1019,"Số điện thoại không được bỏ trống", HttpStatus.BAD_REQUEST),
     NAME_CATEGORY_EXISTED(1020,"Thể loại đã tồn tại", HttpStatus.BAD_REQUEST),
     PRICE_PRODUCT_NOT_NULL(1021,"Giá sản phẩm không được bỏ trống và phải lớn hơn 0", HttpStatus.BAD_REQUEST),
-    MIN_GENDER(1022,"vGiá trị gender phải là 0 hoặc 1", HttpStatus.BAD_REQUEST),
+    MIN_GENDER(1022,"Giá trị gender phải là 0 hoặc 1", HttpStatus.BAD_REQUEST),
     MAX_GENDER(1023,"Giá trị gender phải là 0 hoặc 1", HttpStatus.BAD_REQUEST),
     BRAND_NAME_NOT_NULL(1024,"Tên hãng không được bỏ trống", HttpStatus.BAD_REQUEST),
     BRAND_NOT_EXISTED(1025,"Hãng không tồn tại",HttpStatus.BAD_REQUEST),
@@ -44,6 +44,13 @@ public enum ErrorCode {
     CONTENT_COMMENT_NOT_NULL(1029,"Nội dung comment không được bỏ trống", HttpStatus.BAD_REQUEST),
     PARENT_COMMENT_NOT_FOUND(1030,"Comment cha không tồn tại", HttpStatus.BAD_REQUEST),
     COMMENT_NOT_EXISTED(1031,"Bình luận không tồn tại",HttpStatus.BAD_REQUEST),
+    CART_NOT_EXISTED(1032,"Giỏ hàng không tồn tại",HttpStatus.BAD_REQUEST),
+    CART_ITEM_NOT_EXISTED(1033,"Sản phẩm không tồn tại trong giỏ hàng",HttpStatus.BAD_REQUEST),
+    INVALID_CART_ITEM(1034,"Không có quyền cập nhật giỏ hàng",HttpStatus.BAD_REQUEST),
+    INVALID_TOKEN(1035,"Token không hợp lệ",HttpStatus.BAD_REQUEST),
+    ORDER_NOT_EXISTED(1036,"Hóa đơn không tồn tại",HttpStatus.BAD_REQUEST),
+    MIN_ORDER(1037,"Hóa đơn chỉ thanh toán bằng VnPay hoặc thanh toán khi nhân hàng",HttpStatus.BAD_REQUEST),
+    MAX_ORDER(1038,"Hóa đơn chỉ thanh toán bằng VnPay hoặc thanh toán khi nhân hàng",HttpStatus.BAD_REQUEST)
 
     ;
 

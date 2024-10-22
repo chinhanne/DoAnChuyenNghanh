@@ -1,32 +1,23 @@
 package com.dacn.WebsiteBanDoCongNghe.service;
 
-import com.dacn.WebsiteBanDoCongNghe.dto.request.BrandRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.CommentRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UpdateCommentDisplayRequest;
-import com.dacn.WebsiteBanDoCongNghe.dto.response.BrandResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ChildCommentResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.CommentResponse;
-import com.dacn.WebsiteBanDoCongNghe.entity.Brand;
 import com.dacn.WebsiteBanDoCongNghe.entity.Comment;
 import com.dacn.WebsiteBanDoCongNghe.entity.Product;
 import com.dacn.WebsiteBanDoCongNghe.entity.User;
-import com.dacn.WebsiteBanDoCongNghe.enums.Role;
 import com.dacn.WebsiteBanDoCongNghe.exception.AppException;
 import com.dacn.WebsiteBanDoCongNghe.exception.ErrorCode;
-import com.dacn.WebsiteBanDoCongNghe.mapper.BrandMapper;
 import com.dacn.WebsiteBanDoCongNghe.mapper.CommentMapper;
-import com.dacn.WebsiteBanDoCongNghe.reponsitory.BrandRepository;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.CommentReponsitory;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.ProductReponsitory;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.UserReponsitory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
