@@ -18,6 +18,7 @@ public class UserResponse {
     String email;
     LocalDate dob;
     Long gender;
+    Boolean noPassword;
     String address;
     String numberPhone;
     String image;

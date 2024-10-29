@@ -15,7 +15,7 @@ spring:
 jwt:
   signerKey: "IqD5dWsST/bP7RpDrB0x1mhr+nZdexZeOGrVnWWyw9q4MoomQ1zwm/z+qLAyCK4K"
   valid-duration: 3600
-  refreshable-duration: 360000
+  refreshable-duration: 36000
 
 file:
   upload-dir: src/main/resources/static/uploads
@@ -29,3 +29,10 @@ payment:
     version: 2.1.0
     command: "pay"
     orderType: "other"
+
+outbound:
+  identity:
+      client-id: "210037085601-c5cc540lfikklmmrti82rfnivri4q2tu.apps.googleusercontent.com"
+      client-secret: "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"
+      redirect-uri: "http://localhost:3000/authenticate"
+      grant-type: "authorization_code"

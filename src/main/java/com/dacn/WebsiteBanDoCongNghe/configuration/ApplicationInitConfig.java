@@ -2,8 +2,6 @@ package com.dacn.WebsiteBanDoCongNghe.configuration;
 
 import com.dacn.WebsiteBanDoCongNghe.entity.User;
 import com.dacn.WebsiteBanDoCongNghe.entity.Role;
-import com.dacn.WebsiteBanDoCongNghe.exception.AppException;
-import com.dacn.WebsiteBanDoCongNghe.exception.ErrorCode;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.RoleReponsitory;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.UserReponsitory;
 import lombok.AccessLevel;
