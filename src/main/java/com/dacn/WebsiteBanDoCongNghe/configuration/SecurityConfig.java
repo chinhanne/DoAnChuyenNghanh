@@ -1,8 +1,6 @@
 package com.dacn.WebsiteBanDoCongNghe.configuration;
 
-import com.dacn.WebsiteBanDoCongNghe.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -11,21 +9,23 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 //  Cấu hình quyền cho người dùng
-    private final String[] PUBLIC_ENDPOINTS = {"/users","/auth/token","/auth/introspect","/auth/logout","/auth/refresh"};
-    private final String[] PUBLIC_ENDPOINTS_GET = {"/product/search","/comment/product/{productId}","/comment/with-child/{id}","/comment/{id}","/payment/vn-pay-callback","/payment/vn-pay"};
+    private final String[] PUBLIC_ENDPOINTS = {"/users","/auth/token","/auth/introspect","/auth/logout","/auth/refresh","/auth/outbound/authentication"};
+    private final String[] PUBLIC_ENDPOINTS_GET = {"/product/search","/comment/product/{productId}","/comment/with-child/{id}",
+            "/comment/{id}","/payment/vn-pay-callback","/payment/vn-pay","/category","/brand","/product/{id}"};
 
     @Autowired
     private CustomJwtDecoder customJwtDecoder;
@@ -45,7 +45,20 @@ public class SecurityConfig {
         );
 
         httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
+        httpSecurity.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         return httpSecurity.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Cho phép nguồn từ frontend
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Các phương thức HTTP cho phép
+        config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type")); // Các header cho phép
+        config.setAllowCredentials(true); // Cho phép gửi cookie trong các yêu cầu
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config); // Áp dụng cấu hình này cho mọi endpoint
+        return source;
     }
 
 //    Thay đổi tiền tố từ SCOPE_ thành ROLE_

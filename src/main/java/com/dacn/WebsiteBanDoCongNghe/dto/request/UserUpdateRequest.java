@@ -18,8 +18,6 @@ import java.util.List;
 public class UserUpdateRequest {
     @Size(min = 8, message = "PASSWORD_INVALID")
     String password;
-    String firstname;
-    String lastname;
     @Email(message = "EMAIL_INVALID_FORMAT")
     String email;
     @DobConstraint(min = 18, message = "INVALID_DOB")

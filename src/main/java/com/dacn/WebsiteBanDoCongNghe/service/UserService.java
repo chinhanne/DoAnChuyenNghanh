@@ -1,15 +1,14 @@
 package com.dacn.WebsiteBanDoCongNghe.service;
 
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UserCreationRequest;
+import com.dacn.WebsiteBanDoCongNghe.dto.request.UserInfoLoginGoogleCreateRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UserUpdateRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.UserResponse;
-import com.dacn.WebsiteBanDoCongNghe.entity.Cart;
 import com.dacn.WebsiteBanDoCongNghe.entity.User;
 import com.dacn.WebsiteBanDoCongNghe.entity.Role;
 import com.dacn.WebsiteBanDoCongNghe.exception.AppException;
 import com.dacn.WebsiteBanDoCongNghe.exception.ErrorCode;
 import com.dacn.WebsiteBanDoCongNghe.mapper.UserMapper;
-import com.dacn.WebsiteBanDoCongNghe.reponsitory.CartRepository;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.RoleReponsitory;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.UserReponsitory;
 import lombok.AccessLevel;
@@ -21,12 +20,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -66,14 +66,55 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
+//    kiểm tra điều kiện của cá fields
+    public void validateRequestFields(UserInfoLoginGoogleCreateRequest request, User user) {
+//        hasText return true nếu password có khoong null
+        if (StringUtils.hasText(user.getPassword())) {
+            throw new AppException(ErrorCode.PASSWORD_EXISTED);
+        }
 
+        if (user.getDob() != null) {
+            throw new AppException(ErrorCode.DOB_EXISTED);
+        }
+
+        if (user.getGender() != null) {
+            throw new AppException(ErrorCode.GENDER_EXISTED);
+        }
+
+        if (StringUtils.hasText(user.getAddress())) {
+            throw new AppException(ErrorCode.ADDRESS_EXISTED);
+        }
+
+        if (StringUtils.hasText(user.getNumberPhone())) {
+            throw new AppException(ErrorCode.NUMBER_PHONE_EXISTED);
+        }
+    }
+
+//    update info with user login with google
+    public void updateUserInfoLoginGoogle(UserInfoLoginGoogleCreateRequest request){
+        var name = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userReponsitory.findByUsername(name).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        validateRequestFields(request,user);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setDob(request.getDob());
+        user.setGender(request.getGender());
+        user.setAddress(request.getAddress());
+        user.setNumberPhone(request.getNumberPhone());
+        cartService.createdCartForUser(user);
+
+        userReponsitory.save(user);
+    }
 
     //    Get myInfo
     @PostAuthorize("returnObject.username == authentication.name")
     public UserResponse getMyInfo(){
         var name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userReponsitory.findByUsername(name).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        return userMapper.toUserResponse(user);
+
+        var userResponse = userMapper.toUserResponse(user);
+        userResponse.setNoPassword(!StringUtils.hasText(user.getPassword()));
+        return userResponse;
     }
 
 //    Get all user

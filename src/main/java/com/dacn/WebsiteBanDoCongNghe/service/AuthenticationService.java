@@ -1,17 +1,18 @@
 package com.dacn.WebsiteBanDoCongNghe.service;
 
-import com.dacn.WebsiteBanDoCongNghe.dto.request.AuthenticationRequest;
-import com.dacn.WebsiteBanDoCongNghe.dto.request.IntrospectRequest;
-import com.dacn.WebsiteBanDoCongNghe.dto.request.LogoutRequest;
-import com.dacn.WebsiteBanDoCongNghe.dto.request.RefreshTokenRequest;
+import com.dacn.WebsiteBanDoCongNghe.constant.PredefinedRole;
+import com.dacn.WebsiteBanDoCongNghe.dto.request.*;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.AuthenticationResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.IntrospectResponse;
 import com.dacn.WebsiteBanDoCongNghe.entity.InvalidatedToken;
+import com.dacn.WebsiteBanDoCongNghe.entity.Role;
 import com.dacn.WebsiteBanDoCongNghe.entity.User;
 import com.dacn.WebsiteBanDoCongNghe.exception.AppException;
 import com.dacn.WebsiteBanDoCongNghe.exception.ErrorCode;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.InvalidatedTokenReponsitory;
+import com.dacn.WebsiteBanDoCongNghe.reponsitory.httpCilent.OutboundIdentityClient;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.UserReponsitory;
+import com.dacn.WebsiteBanDoCongNghe.reponsitory.httpCilent.OutboundUserClient;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
@@ -32,9 +33,7 @@ import org.springframework.util.CollectionUtils;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.StringJoiner;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +43,8 @@ public class AuthenticationService {
     UserReponsitory userReponsitory;
 //    PasswordEncoder passwordEncoder;
     InvalidatedTokenReponsitory invalidatedTokenReponsitory;
+    OutboundIdentityClient outboundIdentityClient;
+    OutboundUserClient outboundUserClient;
 
     @NonFinal
     @Value("${jwt.signerKey}")
@@ -56,6 +57,22 @@ public class AuthenticationService {
     @NonFinal
     @Value("${jwt.refreshable-duration}")
     protected long REFRESHABLE_DURATION;
+
+    @NonFinal
+    @Value("${outbound.identity.client-id}")
+    protected String CLIENT_ID;
+
+    @NonFinal
+    @Value("${outbound.identity.client-secret}")
+    protected String CLIENT_SECRET;
+
+    @NonFinal
+    @Value("${outbound.identity.redirect-uri}")
+    protected String REDIRECT_URI;
+
+    @NonFinal
+    @Value("${outbound.identity.grant-type}")
+    protected String GRANT_TYPE;
 
 //    Xac thuc nguoi dung
     public AuthenticationResponse authenticate(AuthenticationRequest request){
@@ -73,6 +90,36 @@ public class AuthenticationService {
                 .authenticated(authenticated)
                 .build();
 
+    }
+
+//    Exchange code api google to create Token
+    public AuthenticationResponse outboundAuthenticated(String code){
+        var response = outboundIdentityClient.exchangeToken(ExchangeTokenRequest.builder()
+                .code(code)
+                .clientId(CLIENT_ID)
+                .clientSecret(CLIENT_SECRET)
+                .redirectUri(REDIRECT_URI)
+                .grantType(GRANT_TYPE)
+                .build());
+
+        var userInfo = outboundUserClient.getUserInfo("json", response.getAccessToken());
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.builder().name(PredefinedRole.USER_ROLE).build());
+
+        var user = userReponsitory.findByUsername(userInfo.getEmail()).orElseGet(() -> userReponsitory.save(User.builder()
+                .username(userInfo.getEmail())
+                .email(userInfo.getEmail())
+                .image(userInfo.getPicture())
+                .roles(roles)
+                .build()));
+
+        var token = generateToken(user);
+
+        return AuthenticationResponse.builder()
+                .token(token)
+                .authenticated(true)
+                .build();
     }
 
 
@@ -164,7 +211,6 @@ public class AuthenticationService {
         }catch(AppException e){
             log.info("Token hết hạn");
         }
-
     }
 
 //    refresh token

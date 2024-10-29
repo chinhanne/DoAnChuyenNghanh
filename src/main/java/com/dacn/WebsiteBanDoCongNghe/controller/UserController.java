@@ -1,10 +1,10 @@
 package com.dacn.WebsiteBanDoCongNghe.controller;
 
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UserCreationRequest;
+import com.dacn.WebsiteBanDoCongNghe.dto.request.UserInfoLoginGoogleCreateRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UserUpdateRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ApiResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.UserResponse;
-import com.dacn.WebsiteBanDoCongNghe.exception.AppException;
 import com.dacn.WebsiteBanDoCongNghe.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -31,6 +31,14 @@ public class UserController {
                                                 @RequestParam MultipartFile imageFile) throws IOException {
         return ApiResponse.<UserResponse>builder()
                 .result(userService.createUser(request,imageFile))
+                .build();
+    }
+
+    @PostMapping("/create/userInfoLoginGoogle")
+    public ApiResponse<Void> updateUserLoginGoogle(@RequestBody @Valid UserInfoLoginGoogleCreateRequest request){
+        userService.updateUserInfoLoginGoogle(request);
+        return ApiResponse.<Void>builder()
+                .message("Đã cập nhật thông tin người dùng thành công")
                 .build();
     }
 

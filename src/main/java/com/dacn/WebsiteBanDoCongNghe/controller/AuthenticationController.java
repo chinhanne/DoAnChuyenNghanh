@@ -11,10 +11,7 @@ import com.dacn.WebsiteBanDoCongNghe.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 
@@ -32,6 +29,14 @@ public class AuthenticationController {
         var result = authenticationService.authenticate(request);
         return ApiResponse.<AuthenticationResponse>builder()
                 .result(result)
+                .build();
+    }
+
+//    exchange code api google -> token
+    @PostMapping("/outbound/authentication")
+    public ApiResponse<AuthenticationResponse> outboundAuthentication(@RequestParam String code){
+        return ApiResponse.<AuthenticationResponse>builder()
+                .result(authenticationService.outboundAuthenticated(code))
                 .build();
     }
 

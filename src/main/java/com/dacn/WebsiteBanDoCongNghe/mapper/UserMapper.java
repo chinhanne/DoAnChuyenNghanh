@@ -16,8 +16,6 @@ public interface UserMapper {
 
 //    @MappingTarget chỉ định đối tượng đích (User) sẽ được cập nhật trực tiếp thay vì tạo mới.
     @Mapping(target = "roles", ignore = true)
-    @Mapping(target = "firstname", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "lastname", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "email", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "dob", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "gender", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

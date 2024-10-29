@@ -50,8 +50,12 @@ public enum ErrorCode {
     INVALID_TOKEN(1035,"Token không hợp lệ",HttpStatus.BAD_REQUEST),
     ORDER_NOT_EXISTED(1036,"Hóa đơn không tồn tại",HttpStatus.BAD_REQUEST),
     MIN_ORDER(1037,"Hóa đơn chỉ thanh toán bằng VnPay hoặc thanh toán khi nhân hàng",HttpStatus.BAD_REQUEST),
-    MAX_ORDER(1038,"Hóa đơn chỉ thanh toán bằng VnPay hoặc thanh toán khi nhân hàng",HttpStatus.BAD_REQUEST)
-
+    MAX_ORDER(1038,"Hóa đơn chỉ thanh toán bằng VnPay hoặc thanh toán khi nhân hàng",HttpStatus.BAD_REQUEST),
+    PASSWORD_EXISTED(1039,"Mật khẩu đã có", HttpStatus.BAD_REQUEST),
+    DOB_EXISTED(1040,"Ngày sinh đã có", HttpStatus.BAD_REQUEST),
+    GENDER_EXISTED(1041,"Giới tính đã có", HttpStatus.BAD_REQUEST),
+    ADDRESS_EXISTED(1042,"Địa chỉ đã có", HttpStatus.BAD_REQUEST),
+    NUMBER_PHONE_EXISTED(1043,"Số điện thoại đã có", HttpStatus.BAD_REQUEST),
     ;
 
     int code;

@@ -44,7 +44,7 @@ public class CategoryService {
     }
 
 //    GetAll category
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public List<CategoryResponse> getAllCategory(){
         return categoryReponsitory.findAll().stream().map(category -> categoryMapper.toCategoryResponse(category)).toList();
     }

@@ -22,7 +22,7 @@ public interface ProductMapper {
     @Mapping(source = "brand.name", target = "brandName")
     ProductResponse toProductResponse(Product product);
 
-    @Mapping(target = "numberPhone", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+//    @Mapping(target = "numberPhone", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 
     void toUpdateProduct(@MappingTarget Product product, ProductUpdatedRequest request);
 
