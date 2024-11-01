@@ -1,6 +1,7 @@
 package com.dacn.WebsiteBanDoCongNghe.mapper;
 
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UserCreationRequest;
+import com.dacn.WebsiteBanDoCongNghe.dto.request.UserUpdatePasswordRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UserUpdateRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.UserResponse;
 import com.dacn.WebsiteBanDoCongNghe.entity.User;
@@ -22,6 +23,8 @@ public interface UserMapper {
     @Mapping(target = "address", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "numberPhone", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUser(@MappingTarget User user, UserUpdateRequest request);
+    void updateUserPassword(@MappingTarget User user, UserUpdatePasswordRequest request);
+
 
 //    Chuyen doi tuong User thanh UserResponse
     UserResponse toUserResponse(User user);

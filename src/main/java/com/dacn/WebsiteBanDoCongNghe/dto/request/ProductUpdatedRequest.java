@@ -22,4 +22,8 @@ public class ProductUpdatedRequest {
     List<MultipartFile> images;
     Long categoryId;
     Long brandId;
+    String chip;
+    String card;
+    String ram;
+    String screen;
 }

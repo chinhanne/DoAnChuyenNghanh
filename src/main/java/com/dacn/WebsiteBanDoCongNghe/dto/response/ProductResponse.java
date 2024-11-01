@@ -1,9 +1,7 @@
 package com.dacn.WebsiteBanDoCongNghe.dto.response;
 
-import com.dacn.WebsiteBanDoCongNghe.entity.Image;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,4 +22,8 @@ public class ProductResponse {
     LocalDate dateCreated;
     LocalDate dateUpdated;
     String brandName;
+    String chip;
+    String card;
+    String ram;
+    String screen;
 }

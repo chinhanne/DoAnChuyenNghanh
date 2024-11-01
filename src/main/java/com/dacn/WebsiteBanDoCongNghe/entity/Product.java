@@ -37,6 +37,10 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     List<Comment> comments = new ArrayList<>();
+    String chip;
+    String card;
+    String ram;
+    String screen;
 
 //    Khởi tạo thời gian tạo sản phẩm
     @PrePersist
