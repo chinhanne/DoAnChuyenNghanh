@@ -25,7 +25,7 @@ public class SecurityConfig {
 //  Cấu hình quyền cho người dùng
     private final String[] PUBLIC_ENDPOINTS = {"/users","/auth/token","/auth/introspect","/auth/logout","/auth/refresh","/auth/outbound/authentication"};
     private final String[] PUBLIC_ENDPOINTS_GET = {"/product/search","/comment/product/{productId}","/comment/with-child/{id}",
-            "/comment/{id}","/payment/vn-pay-callback","/payment/vn-pay","/category","/brand","/product/{id}"};
+            "/comment/{id}","/payment/vn-pay-callback","/payment/vn-pay","/category","/brand","/product/{id}","/discount"};
 
     @Autowired
     private CustomJwtDecoder customJwtDecoder;

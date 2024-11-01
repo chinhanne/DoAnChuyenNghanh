@@ -47,7 +47,7 @@ public class BrandController {
                 .build();
     }
 
-//    Delete Category
+//    Delete Brand
     @DeleteMapping("/{id}")
     public ApiResponse<String> deleted(@PathVariable Long id){
         brandService.deleteBrand(id);

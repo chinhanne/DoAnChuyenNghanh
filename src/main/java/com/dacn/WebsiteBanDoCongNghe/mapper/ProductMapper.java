@@ -18,11 +18,10 @@ public interface ProductMapper {
     Product toProduct(ProductRequest request);
 
     // Ánh xạ từ category.name sang categoryName
+    @Mapping(source = "id", target = "id")
     @Mapping(source = "category.name", target = "categoryName")
     @Mapping(source = "brand.name", target = "brandName")
     ProductResponse toProductResponse(Product product);
-
-//    @Mapping(target = "numberPhone", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 
     void toUpdateProduct(@MappingTarget Product product, ProductUpdatedRequest request);
 

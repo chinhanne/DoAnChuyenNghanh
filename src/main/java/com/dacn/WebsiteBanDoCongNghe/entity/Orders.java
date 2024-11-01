@@ -19,17 +19,25 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
     String transactionId;
+
     @Enumerated(EnumType.STRING)
     OrderStatus orderStatus;
     Integer payment;
+
     @Enumerated(EnumType.STRING)
     OrderStatusPayment statusPayment;
     Double totalPrice;
     LocalDateTime oderDate;
+
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
     List<OrderDetails> orderDetails;
+
+    @ManyToOne
+    @JoinColumn(name = "discount_id")
+    Discount discount;
 }

@@ -1,16 +1,11 @@
 package com.dacn.WebsiteBanDoCongNghe.service;
 
 import com.dacn.WebsiteBanDoCongNghe.configuration.VnPayConfig;
-import com.dacn.WebsiteBanDoCongNghe.dto.request.OrderDetailsRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.OrderRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UpdateOrderRequest;
-import com.dacn.WebsiteBanDoCongNghe.dto.response.ApiResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.OrderResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.VNPAYPaymentsResponse;
-import com.dacn.WebsiteBanDoCongNghe.entity.Cart;
-import com.dacn.WebsiteBanDoCongNghe.entity.Orders;
-import com.dacn.WebsiteBanDoCongNghe.entity.OrderDetails;
-import com.dacn.WebsiteBanDoCongNghe.entity.User;
+import com.dacn.WebsiteBanDoCongNghe.entity.*;
 import com.dacn.WebsiteBanDoCongNghe.enums.OrderStatus;
 import com.dacn.WebsiteBanDoCongNghe.enums.OrderStatusPayment;
 import com.dacn.WebsiteBanDoCongNghe.exception.AppException;
@@ -29,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -43,6 +37,8 @@ public class OrderService {
     UserReponsitory userReponsitory;
     VNPAYPaymentService vnpayPaymentService;
     VnPayConfig vnPayConfig;
+    DiscountService discountService;
+    DiscountRepository discountRepository;
 
 //    Kiểm tra sự tồn tại của user
     private User getAuthenticatedUser() {
@@ -92,6 +88,10 @@ public class OrderService {
         double totalPrice = orderDetails.stream().mapToDouble(OrderDetails::getTotalPrice).sum();
         orders.setTotalPrice(totalPrice);
 
+        if(request.getDiscountId() != null){
+            discountService.applyDiscount(request.getDiscountId(), user,orders);
+        }
+
         if (request.getPayment() == 1) {
             VNPAYPaymentsResponse vnpayPaymentsResponse = vnpayPaymentService.createVnPayPayment(httpServletRequest, transactionId);
             orders.setPayment(1);
@@ -100,12 +100,15 @@ public class OrderService {
             OrderResponse orderResponse = orderMapper.toResponseOrder(orders); // Chuyển đổi đơn hàng thành phản hồi
             orderResponse.setPaymentUrl(vnpayPaymentsResponse.getPaymentUrl()); // Thiết lập paymentUrl
             orderResponse.setTransactionId(transactionId);
+            orderResponse.setDiscountCode(orders.getDiscount() != null ? orders.getDiscount().getCode() : null);
             return orderResponse;
         } else {
             orders.setPayment(0);
             orderRepository.save(orders);
+
             return orderMapper.toResponseOrder(orders);
         }
+
     }
 
     public boolean payCallbackHandler(HttpServletRequest request) {
