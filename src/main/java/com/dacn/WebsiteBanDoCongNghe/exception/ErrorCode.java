@@ -56,6 +56,10 @@ public enum ErrorCode {
     GENDER_EXISTED(1041,"Giới tính đã có", HttpStatus.BAD_REQUEST),
     ADDRESS_EXISTED(1042,"Địa chỉ đã có", HttpStatus.BAD_REQUEST),
     NUMBER_PHONE_EXISTED(1043,"Số điện thoại đã có", HttpStatus.BAD_REQUEST),
+    DISCOUNT_NOT_EXISTED(1044,"Mã giảm giá không tồn tại", HttpStatus.BAD_REQUEST),
+    TIME_EXPIRED(1045,"Hiệu lực của mã giảm giá đã hết hạn", HttpStatus.BAD_REQUEST),
+    END_OF_USE(1046,"Hết lượt dùng phiếu giảm giá", HttpStatus.BAD_REQUEST),
+    DISCOUNT_NOT_VALUE(1047,"Giá trị đơn hàng hoặc sản phẩm không thỏa mãn điều kiện", HttpStatus.BAD_REQUEST),
     ;
 
     int code;

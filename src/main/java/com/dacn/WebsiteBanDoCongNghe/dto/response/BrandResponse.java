@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BrandResponse {
+    Long id;
     String name;
     String description;
     LocalDateTime dateCreated;

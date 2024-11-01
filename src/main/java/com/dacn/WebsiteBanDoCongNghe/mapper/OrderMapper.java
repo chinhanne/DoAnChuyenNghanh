@@ -16,6 +16,7 @@ public interface OrderMapper {
     @Mapping(source = "totalPrice", target = "totalPrice")
     @Mapping(source = "oderDate", target = "orderDate")
     @Mapping(source = "statusPayment", target = "statusPayment")
+    @Mapping(source = "discount.code", target = "discountCode")
     OrderResponse toResponseOrder(Orders orders);
     OrderDetails toOrderDetails(OrderDetailsRequest request);
     @Mapping(source = "product.name", target = "productName")

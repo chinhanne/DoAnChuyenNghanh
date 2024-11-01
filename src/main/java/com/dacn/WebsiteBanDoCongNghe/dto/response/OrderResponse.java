@@ -22,4 +22,5 @@ public class OrderResponse {
     String paymentUrl;
     String statusPayment;
     String transactionId;
+    String discountCode;
 }
