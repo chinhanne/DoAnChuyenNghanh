@@ -13,7 +13,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -22,11 +24,16 @@ import java.util.List;
 public class CategoryService {
     CategoryReponsitory categoryReponsitory;
     CategoryMapper categoryMapper;
+    FileStorageService fileStorageService;
 
 //    Created category
     @PreAuthorize("hasRole('ADMIN')")
-    public CategoryResponse createdCategory(CategoryRequest request){
+    public CategoryResponse createdCategory(CategoryRequest request, MultipartFile imageFile) throws IOException {
         Category category = categoryMapper.toCategory(request);
+        if(imageFile != null && !imageFile.isEmpty()){
+            String imageUrl = fileStorageService.saveFile(imageFile);
+            category.setImage(imageUrl);
+        }
         try{
             categoryReponsitory.save(category);
         }catch(DataIntegrityViolationException e){
@@ -37,9 +44,13 @@ public class CategoryService {
 
 //    Updated category
     @PreAuthorize("hasRole('ADMIN')")
-    public CategoryResponse updatedCategory(Long id, CategoryRequest request){
+    public CategoryResponse updatedCategory(Long id, CategoryRequest request, MultipartFile imageFile) throws IOException {
         Category category = categoryReponsitory.findById(id).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
         categoryMapper.updateCategory(category, request);
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String imageUrl = fileStorageService.saveFile(imageFile);
+            category.setImage(imageUrl);
+        }
         return categoryMapper.toCategoryResponse(categoryReponsitory.save(category));
     }
 

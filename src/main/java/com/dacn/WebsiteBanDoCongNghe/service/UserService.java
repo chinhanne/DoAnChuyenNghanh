@@ -2,6 +2,7 @@ package com.dacn.WebsiteBanDoCongNghe.service;
 
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UserCreationRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UserInfoLoginGoogleCreateRequest;
+import com.dacn.WebsiteBanDoCongNghe.dto.request.UserUpdatePasswordRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UserUpdateRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.UserResponse;
 import com.dacn.WebsiteBanDoCongNghe.entity.User;
@@ -174,6 +175,19 @@ public class UserService {
             String imageUrl = fileStorageService.saveFile(imageFile);
             user.setImage(imageUrl);
         }
+        return userMapper.toUserResponse(userReponsitory.save(user));
+    }
+
+//    Update password myInFo
+    @PostAuthorize("returnObject.username == authentication.name")
+    public UserResponse updatePasswordMyInfo(String username, UserUpdatePasswordRequest request){
+        User user = userReponsitory.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        userMapper.updateUserPassword(user,request);
+
+        if (request.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
         return userMapper.toUserResponse(userReponsitory.save(user));
     }
 

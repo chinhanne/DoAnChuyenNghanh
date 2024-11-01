@@ -2,6 +2,7 @@ package com.dacn.WebsiteBanDoCongNghe.controller;
 
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UserCreationRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UserInfoLoginGoogleCreateRequest;
+import com.dacn.WebsiteBanDoCongNghe.dto.request.UserUpdatePasswordRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UserUpdateRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ApiResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.UserResponse;
@@ -83,6 +84,15 @@ public class UserController {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         return ApiResponse.<UserResponse>builder()
                 .result(userService.updateMyInfo(name,request,image))
+                .build();
+    }
+
+    //    Update password myInfo
+    @PutMapping("/password-myInfo")
+    public ApiResponse<UserResponse> updatePasswordMyInfo(@RequestBody @Valid UserUpdatePasswordRequest request){
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.updatePasswordMyInfo(name,request))
                 .build();
     }
 

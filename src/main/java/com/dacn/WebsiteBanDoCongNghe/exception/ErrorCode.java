@@ -60,6 +60,7 @@ public enum ErrorCode {
     TIME_EXPIRED(1045,"Hiệu lực của mã giảm giá đã hết hạn", HttpStatus.BAD_REQUEST),
     END_OF_USE(1046,"Hết lượt dùng phiếu giảm giá", HttpStatus.BAD_REQUEST),
     DISCOUNT_NOT_VALUE(1047,"Giá trị đơn hàng hoặc sản phẩm không thỏa mãn điều kiện", HttpStatus.BAD_REQUEST),
+    WRONGPASSWORD_USERNAME(1048, "Sai tài khoản hoặc mật khẩu",HttpStatus.BAD_REQUEST),
     ;
 
     int code;

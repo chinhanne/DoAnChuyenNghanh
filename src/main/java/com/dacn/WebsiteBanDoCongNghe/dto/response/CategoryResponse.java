@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 public class CategoryResponse {
     Long id;
     String name;
+    String image;
     LocalDateTime dateCreated;
     LocalDateTime dateUpdated;
 }
