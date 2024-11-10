@@ -1,4 +1,4 @@
-package com.dacn.WebsiteBanDoCongNghe.utils;
+package com.dacn.WebsiteBanDoCongNghe.scheduled;
 
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.InvalidatedTokenReponsitory;
 import lombok.AccessLevel;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Component
 @RequiredArgsConstructor

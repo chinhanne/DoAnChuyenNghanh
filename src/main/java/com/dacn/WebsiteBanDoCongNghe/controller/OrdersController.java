@@ -1,11 +1,11 @@
 package com.dacn.WebsiteBanDoCongNghe.controller;
 
+import com.dacn.WebsiteBanDoCongNghe.dto.request.MonthlyRevenueRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.OrderRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UpdateOrderRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ApiResponse;
+import com.dacn.WebsiteBanDoCongNghe.dto.response.MonthlyRevenueResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.OrderResponse;
-import com.dacn.WebsiteBanDoCongNghe.exception.AppException;
-import com.dacn.WebsiteBanDoCongNghe.exception.ErrorCode;
 import com.dacn.WebsiteBanDoCongNghe.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
@@ -14,6 +14,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/orders")
@@ -57,5 +58,12 @@ public class OrdersController {
         return ApiResponse.<String>builder()
                 .result("Xóa đơn hàng thành công.")
                 .build();
+    }
+
+    @PostMapping("/monthly")
+    public ApiResponse<MonthlyRevenueResponse> getMonthlyRevenue(@RequestBody MonthlyRevenueRequest request) {
+       return ApiResponse.<MonthlyRevenueResponse>builder()
+               .result(orderService.getMonthlyRevenue(request))
+               .build();
     }
 }

@@ -1,13 +1,9 @@
 package com.dacn.WebsiteBanDoCongNghe.controller;
 
 import com.dacn.WebsiteBanDoCongNghe.dto.request.BrandRequest;
-import com.dacn.WebsiteBanDoCongNghe.dto.request.CategoryRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ApiResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.BrandResponse;
-import com.dacn.WebsiteBanDoCongNghe.dto.response.CategoryResponse;
-import com.dacn.WebsiteBanDoCongNghe.entity.Brand;
 import com.dacn.WebsiteBanDoCongNghe.service.BrandService;
-import com.dacn.WebsiteBanDoCongNghe.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

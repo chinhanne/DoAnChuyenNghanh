@@ -18,5 +18,9 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserUpdatePasswordRequest {
     @Size(min = 8, message = "PASSWORD_INVALID")
+    String currentPassword;
+    @Size(min = 8, message = "PASSWORD_INVALID")
     String password;
+    @Size(min = 8, message = "PASSWORD_INVALID")
+    String confirmPassword;
 }

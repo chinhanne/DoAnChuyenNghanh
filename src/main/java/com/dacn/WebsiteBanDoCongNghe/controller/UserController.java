@@ -58,7 +58,6 @@ public class UserController {
                 .result(userService.getAllUser())
                 .build();
     }
-
 //    Get User by id
     @GetMapping("/{id}")
     public ApiResponse<UserResponse> getUserById(@PathVariable String id){

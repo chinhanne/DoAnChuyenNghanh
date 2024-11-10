@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -12,6 +13,7 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
+    String id;
     String username;
     String email;
     LocalDate dob;
@@ -21,4 +23,6 @@ public class UserResponse {
     String numberPhone;
     String image;
     Set<RoleResponse> roles;
+    LocalDateTime dateCreated;
+    LocalDateTime dateUpdated;
 }

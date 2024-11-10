@@ -33,7 +33,7 @@ public enum ErrorCode {
     ADDRESS_NOT_NULL(1018,"Địa chỉ không được bỏ trống", HttpStatus.BAD_REQUEST),
     NUMBERPHONE_NOT_NULL(1019,"Số điện thoại không được bỏ trống", HttpStatus.BAD_REQUEST),
     NAME_CATEGORY_EXISTED(1020,"Thể loại đã tồn tại", HttpStatus.BAD_REQUEST),
-    PRICE_PRODUCT_NOT_NULL(1021,"Giá sản phẩm không được bỏ trống và phải lớn hơn 0", HttpStatus.BAD_REQUEST),
+    PRICE_PRODUCT_NOT_NULL(1021,"Giá sản phẩm không được bỏ trống và phải lớn hơn hoặc bằng 0", HttpStatus.BAD_REQUEST),
     MIN_GENDER(1022,"Giá trị gender phải là 0 hoặc 1", HttpStatus.BAD_REQUEST),
     MAX_GENDER(1023,"Giá trị gender phải là 0 hoặc 1", HttpStatus.BAD_REQUEST),
     BRAND_NAME_NOT_NULL(1024,"Tên hãng không được bỏ trống", HttpStatus.BAD_REQUEST),
@@ -61,6 +61,10 @@ public enum ErrorCode {
     END_OF_USE(1046,"Hết lượt dùng phiếu giảm giá", HttpStatus.BAD_REQUEST),
     DISCOUNT_NOT_VALUE(1047,"Giá trị đơn hàng hoặc sản phẩm không thỏa mãn điều kiện", HttpStatus.BAD_REQUEST),
     WRONGPASSWORD_USERNAME(1048, "Sai tài khoản hoặc mật khẩu",HttpStatus.BAD_REQUEST),
+    INVALID_CURRENT_PASSWORD(1049, "Mật khẩu hiện tại bị không đúng",HttpStatus.BAD_REQUEST),
+    PASSWORD_CONFIRMATION_MISMATCH(1050, "Xác nhận mật khẩu không đúng",HttpStatus.BAD_REQUEST),
+    QUANTITY_PRODUCT_NOT_NULL(1051, "Số lượng sản phẩm không được bỏ trống và giá trị của nó phải lớn hơn hoặc bằng 0.",HttpStatus.BAD_REQUEST),
+    PRICE_SALE_PRODUCT_NOT_NULL(1052, "Giá giảm của sản phẩm phải lớn hơn hoặc bằng 0 và không được bỏ trống.",HttpStatus.BAD_REQUEST),
     ;
 
     int code;

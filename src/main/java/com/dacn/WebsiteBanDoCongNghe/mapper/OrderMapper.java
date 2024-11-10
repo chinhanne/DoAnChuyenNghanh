@@ -14,7 +14,7 @@ public interface OrderMapper {
     Orders toOrder(OrderRequest request);
     @Mapping(source = "user.username", target = "userName")
     @Mapping(source = "totalPrice", target = "totalPrice")
-    @Mapping(source = "oderDate", target = "orderDate")
+    @Mapping(source = "orderDate", target = "orderDate")
     @Mapping(source = "statusPayment", target = "statusPayment")
     @Mapping(source = "discount.code", target = "discountCode")
     OrderResponse toResponseOrder(Orders orders);

@@ -1,7 +1,5 @@
 package com.dacn.WebsiteBanDoCongNghe.dto.request;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -10,8 +8,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderDetailsRequest {
-    Long productId;
-    Integer quantity;
-    Double productPrice;
+public class MonthlyRevenueRequest {
+    Integer month;
+    Integer year;
 }

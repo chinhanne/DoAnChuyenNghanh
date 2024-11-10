@@ -1,21 +1,20 @@
 package com.dacn.WebsiteBanDoCongNghe.service;
 
 import com.dacn.WebsiteBanDoCongNghe.dto.request.BrandRequest;
-import com.dacn.WebsiteBanDoCongNghe.dto.request.CategoryRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.BrandResponse;
-import com.dacn.WebsiteBanDoCongNghe.dto.response.CategoryResponse;
 import com.dacn.WebsiteBanDoCongNghe.entity.Brand;
-import com.dacn.WebsiteBanDoCongNghe.entity.Category;
 import com.dacn.WebsiteBanDoCongNghe.exception.AppException;
 import com.dacn.WebsiteBanDoCongNghe.exception.ErrorCode;
 import com.dacn.WebsiteBanDoCongNghe.mapper.BrandMapper;
-import com.dacn.WebsiteBanDoCongNghe.mapper.CategoryMapper;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.BrandRepository;
-import com.dacn.WebsiteBanDoCongNghe.reponsitory.CategoryReponsitory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Limit;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +50,7 @@ public class BrandService {
 //    GetAll category
 //    @PreAuthorize("hasRole('ADMIN')")
     public List<BrandResponse> getAllBrand(){
-        return brandRepository.findAll().stream().map(brand -> brandMapper.toBrandResponse(brand)).toList();
+        return brandRepository.findAll().stream().map(brandMapper::toBrandResponse).toList();
     }
 
 //    Delete category

@@ -11,6 +11,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -57,7 +60,8 @@ public class CategoryService {
 //    GetAll category
 //    @PreAuthorize("hasRole('ADMIN')")
     public List<CategoryResponse> getAllCategory(){
-        return categoryReponsitory.findAll().stream().map(category -> categoryMapper.toCategoryResponse(category)).toList();
+        return categoryReponsitory.findAll().stream().map(categoryMapper::toCategoryResponse).toList();
+
     }
 
 //    Delete category
