@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class Orders {
     @Enumerated(EnumType.STRING)
     OrderStatusPayment statusPayment;
     Double totalPrice;
-    LocalDateTime oderDate;
+    LocalDate orderDate;
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
     List<OrderDetails> orderDetails;

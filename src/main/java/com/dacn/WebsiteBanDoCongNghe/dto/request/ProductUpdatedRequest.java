@@ -16,8 +16,12 @@ import java.util.List;
 public class ProductUpdatedRequest {
     @NotBlank(message = "PRODUCT_NAME_NOT_NULL")
     String name;
-    @Min(value = 1, message = "PRICE_PRODUCT_NOT_NULL")
+    @Min(value = 0, message = "PRICE_PRODUCT_NOT_NULL")
     double price;
+    @Min(value = 0, message = "PRICE_SALE_PRODUCT_NOT_NULL")
+    double priceSale;
+    @Min(value = 0, message = "QUANTITY_PRODUCT_NOT_NULL")
+    Long quantity;
     String description;
     List<MultipartFile> images;
     Long categoryId;

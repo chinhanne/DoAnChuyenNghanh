@@ -38,11 +38,11 @@ public class VNPAYPaymentService {
 
     }
 
-    public VNPAYPaymentsResponse createVnPayPayment(HttpServletRequest request,String transactionId) {
+    public VNPAYPaymentsResponse createVnPayPayment(HttpServletRequest request, String transactionId, Orders orders) {
         User user = getAuthenticatedUser();
-        Cart cart = cartRepository.findByUser_Username(user.getUsername()).orElseThrow(() -> new AppException(ErrorCode.CART_NOT_EXISTED));
+//        Cart cart = cartRepository.findByUser_Username(user.getUsername()).orElseThrow(() -> new AppException(ErrorCode.CART_NOT_EXISTED));
 
-        long totalPrice =Math.round(cart.getCartItems().stream().mapToDouble(cartItem -> cartItem.getTotalPrice()).sum() * 100);
+        long totalPrice =Math.round(orders.getTotalPrice() * 100);
         String amount = String.valueOf(totalPrice);
         String bankCode = "NCB";
 

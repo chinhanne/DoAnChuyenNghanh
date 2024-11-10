@@ -58,13 +58,11 @@ public class ProductController {
 //    Search Product
         @GetMapping("/search")
         public ApiResponse<List<ProductResponse>> search(
-                @RequestParam(required = false) String name,
                 @RequestParam(required = false) String categoryName,
                 @RequestParam(required = false) String brandName,
                 @RequestParam(required = false) Double price
         ){
             SearchRequest searchRequest = new SearchRequest();
-            searchRequest.setName(name);
             searchRequest.setCategoryName(categoryName);
             searchRequest.setBrandName(brandName);
             searchRequest.setPrice(price);

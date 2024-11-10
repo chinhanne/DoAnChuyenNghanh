@@ -1,15 +1,16 @@
 package com.dacn.WebsiteBanDoCongNghe.service;
 
 import com.dacn.WebsiteBanDoCongNghe.configuration.VnPayConfig;
+import com.dacn.WebsiteBanDoCongNghe.dto.request.MonthlyRevenueRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.OrderRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UpdateOrderRequest;
-import com.dacn.WebsiteBanDoCongNghe.dto.response.OrderResponse;
-import com.dacn.WebsiteBanDoCongNghe.dto.response.VNPAYPaymentsResponse;
+import com.dacn.WebsiteBanDoCongNghe.dto.response.*;
 import com.dacn.WebsiteBanDoCongNghe.entity.*;
 import com.dacn.WebsiteBanDoCongNghe.enums.OrderStatus;
 import com.dacn.WebsiteBanDoCongNghe.enums.OrderStatusPayment;
 import com.dacn.WebsiteBanDoCongNghe.exception.AppException;
 import com.dacn.WebsiteBanDoCongNghe.exception.ErrorCode;
+import com.dacn.WebsiteBanDoCongNghe.mapper.MonthlyRevenueMapper;
 import com.dacn.WebsiteBanDoCongNghe.mapper.OrderMapper;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.*;
 import com.dacn.WebsiteBanDoCongNghe.utils.VnPayUtils;
@@ -17,12 +18,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,9 +43,9 @@ public class OrderService {
     CartRepository cartRepository;
     UserReponsitory userReponsitory;
     VNPAYPaymentService vnpayPaymentService;
-    VnPayConfig vnPayConfig;
     DiscountService discountService;
-    DiscountRepository discountRepository;
+    MonthlyRevenueMapper monthlyRevenueMapper;
+    ProductReponsitory productReponsitory;
 
 //    Kiểm tra sự tồn tại của user
     private User getAuthenticatedUser() {
@@ -57,27 +64,29 @@ public class OrderService {
     public OrderResponse checkout(OrderRequest request, HttpServletRequest httpServletRequest){
         User user = getAuthenticatedUser();
 
-        Cart cart = cartRepository.findByUser_Username(user.getUsername())
-                .orElseThrow(() -> new AppException(ErrorCode.CART_NOT_EXISTED));
-
         Orders orders = orderMapper.toOrder(request);
         orders.setUser(user);
         orders.setOrderStatus(OrderStatus.CHO_XU_LY);
-        orders.setOderDate(LocalDateTime.now());
+        orders.setOrderDate(LocalDate.now());
         orders.setStatusPayment(OrderStatusPayment.DANG_CHO_XU_LY);
 
         String transactionId = VnPayUtils.generateTransactionIdWithDate(8);
         orders.setTransactionId(transactionId);
 
-        List<OrderDetails> orderDetails = cart.getCartItems().stream()
-                .map(cartItem -> {
-                    if(cartItem.getProduct().getId() == null) {
+        List<OrderDetails> orderDetails = request.getOrderDetails().stream()
+                .map(orderDetailsRequest -> {
+                    if(orderDetailsRequest.getProductId() == null) {
                         throw new AppException(ErrorCode.PRODUCT_NOT_EXISTED);
                     }
-                    OrderDetails orderDetail = new OrderDetails();
-                    orderDetail.setProduct(cartItem.getProduct());
-                    orderDetail.setQuantity(cartItem.getQuantity());
-                    orderDetail.setTotalPrice(cartItem.getTotalPrice());
+
+                    Product product = productReponsitory.findById(orderDetailsRequest.getProductId())
+                            .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
+
+
+                    OrderDetails orderDetail = orderMapper.toOrderDetails(orderDetailsRequest);
+                    orderDetail.setProduct(product);
+                    orderDetail.setQuantity(orderDetailsRequest.getQuantity());
+                    orderDetail.setTotalPrice(orderDetailsRequest.getQuantity() * orderDetailsRequest.getProductPrice());
                     orderDetail.setOrders(orders);
                     return orderDetail;
                 })
@@ -93,7 +102,7 @@ public class OrderService {
         }
 
         if (request.getPayment() == 1) {
-            VNPAYPaymentsResponse vnpayPaymentsResponse = vnpayPaymentService.createVnPayPayment(httpServletRequest, transactionId);
+            VNPAYPaymentsResponse vnpayPaymentsResponse = vnpayPaymentService.createVnPayPayment(httpServletRequest, transactionId, orders);
             orders.setPayment(1);
             orderRepository.save(orders);
 
@@ -127,6 +136,40 @@ public class OrderService {
             orderRepository.save(orders);
             return false;
         }
+    }
+
+//    Thống kê doanh thu
+    public MonthlyRevenueResponse getMonthlyRevenue(MonthlyRevenueRequest request){
+        int month = request.getMonth();
+        int year = request.getYear();
+
+        YearMonth yearMonth = YearMonth.of(year,month);
+        LocalDate startOfMonth = yearMonth.atDay(1);
+        LocalDate endOfMonth = yearMonth.atEndOfMonth();
+
+        List<Orders>  orders = orderRepository.findByOrderDateBetween(startOfMonth,endOfMonth);
+        List<WeeklyRevenue> weeklyRevenues = new ArrayList<>();
+        double totalRevenue = 0.0;
+
+        for(int week = 1; week <= 4; week++){
+            LocalDate weekStart = startOfMonth.plusDays((week - 1) * 7);
+            LocalDate weekEnd = startOfMonth.plusDays(6).isAfter(endOfMonth) ? endOfMonth : weekStart.plusDays(6);
+
+            double revenue = orders.stream()
+                    .filter(order -> !order.getOrderDate().isBefore(weekStart) && !order.getOrderDate().isAfter(weekEnd))
+                    .mapToDouble(Orders::getTotalPrice)
+                    .sum();
+
+            weeklyRevenues.add(new WeeklyRevenue(week, revenue));
+            totalRevenue += revenue;
+
+        }
+
+        MonthlyRevenueResponse monthlyRevenueResponse = monthlyRevenueMapper.toMonthlyRevenueResponse(request);
+        monthlyRevenueResponse.setWeeklyRevenue(weeklyRevenues);
+        monthlyRevenueResponse.setTotalRevenue(totalRevenue);
+
+        return monthlyRevenueResponse;
     }
 
     @PreAuthorize("hasRole('ADMIN')")

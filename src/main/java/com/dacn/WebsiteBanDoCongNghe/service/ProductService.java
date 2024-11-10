@@ -17,6 +17,9 @@ import com.dacn.WebsiteBanDoCongNghe.reponsitory.ProductReponsitory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -70,7 +73,7 @@ public class ProductService {
 
 //     Get All Product
     public List<ProductResponse> getAllProduct(){
-        return productReponsitory.findAll().stream().map(product -> productMapper.toProductResponse(product)).toList();
+        return productReponsitory.findAll().stream().map(productMapper::toProductResponse).toList();
     }
 
 //    Get Product by Id
@@ -117,19 +120,24 @@ public class ProductService {
     }
 
 //    Filter by product name and categoryId and price
-    public List<ProductResponse> getProductFilter(SearchRequest request){
-        List<Product> allProducts = productReponsitory.findAll();
+public List<ProductResponse> getProductFilter(SearchRequest request) {
+    List<Product> allProducts = productReponsitory.findAll();
 
-        List<Product> filteredProducts = allProducts.stream()
-                .filter(product -> (request.getName() == null || product.getName().toLowerCase().contains(request.getName().toLowerCase())))
-                .filter(product -> (request.getCategoryName() == null || product.getCategory().getName().toLowerCase().contains(request.getCategoryName().toLowerCase())))
-                .filter(product -> (request.getBrandName() == null || product.getBrand().getName().toLowerCase().contains(request.getBrandName().toLowerCase())))
-                .filter(product -> (request.getPrice() == null || product.getPrice() <= request.getPrice()))
-                .collect(Collectors.toList());
-        return filteredProducts.stream().map(product -> productMapper.toProductResponse(product)).collect(Collectors.toList());
-    }
+    List<Product> filteredProducts = allProducts.stream()
+            .filter(product -> (request.getCategoryName() == null ||
+                    (product.getCategory() != null && product.getCategory().getName().toLowerCase().contains(request.getCategoryName().toLowerCase()))))
+            .filter(product -> (request.getBrandName() == null ||
+                    (product.getBrand() != null && product.getBrand().getName().toLowerCase().contains(request.getBrandName().toLowerCase()))))
+            .filter(product -> (request.getPrice() == null || product.getPrice() <= request.getPrice()))
+            .collect(Collectors.toList());
 
-//    Delete Product
+    return filteredProducts.stream()
+            .map(product -> productMapper.toProductResponse(product))
+            .collect(Collectors.toList());
+}
+
+
+    //    Delete Product
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteProduct(Long id){
         if(!productReponsitory.existsById(id)){

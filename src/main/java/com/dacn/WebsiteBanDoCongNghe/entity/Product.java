@@ -21,9 +21,11 @@ public class Product {
     Long id;
     String name;
     double price;
+    double priceSale;
     String description;
     LocalDate dateCreated;
     LocalDate dateUpdated;
+    Long quantity;
     @ManyToOne
     @JoinColumn(name = "category_id")
     Category category;

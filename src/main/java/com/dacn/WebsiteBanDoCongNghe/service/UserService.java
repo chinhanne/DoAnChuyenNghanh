@@ -16,6 +16,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,7 +28,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 
@@ -182,10 +184,19 @@ public class UserService {
     @PostAuthorize("returnObject.username == authentication.name")
     public UserResponse updatePasswordMyInfo(String username, UserUpdatePasswordRequest request){
         User user = userReponsitory.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        if(!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())){
+            throw new AppException(ErrorCode.INVALID_CURRENT_PASSWORD);
+        }
+
         userMapper.updateUserPassword(user,request);
 
         if (request.getPassword() != null) {
             user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
+        if(!request.getPassword().equals(request.getConfirmPassword())){
+            throw new AppException(ErrorCode.PASSWORD_CONFIRMATION_MISMATCH);
         }
 
         return userMapper.toUserResponse(userReponsitory.save(user));

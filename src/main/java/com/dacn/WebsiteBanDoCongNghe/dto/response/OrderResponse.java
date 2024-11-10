@@ -3,6 +3,7 @@ package com.dacn.WebsiteBanDoCongNghe.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class OrderResponse {
     String orderStatus;
     Integer payment;
     Double totalPrice;
-    LocalDateTime orderDate;
+    LocalDate orderDate;
     String paymentUrl;
     String statusPayment;
     String transactionId;

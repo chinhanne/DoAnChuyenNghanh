@@ -23,10 +23,10 @@ public class VNPAYPaymentController {
     OrderService orderService;
 
     @GetMapping("/vn-pay")
-    public ApiResponse<VNPAYPaymentsResponse> pay(HttpServletRequest request) {
+    public ApiResponse<VNPAYPaymentsResponse> pay(HttpServletRequest request, Orders orders) {
         String transactionId = request.getParameter("vnp_TxnRef");
         return ApiResponse.<VNPAYPaymentsResponse>builder()
-                .result(paymentService.createVnPayPayment(request,transactionId))
+                .result(paymentService.createVnPayPayment(request,transactionId, orders))
                 .build();
     }
 
