@@ -1,9 +1,7 @@
 package com.dacn.WebsiteBanDoCongNghe.service;
 
 import com.dacn.WebsiteBanDoCongNghe.configuration.VnPayConfig;
-import com.dacn.WebsiteBanDoCongNghe.dto.request.MonthlyRevenueRequest;
-import com.dacn.WebsiteBanDoCongNghe.dto.request.OrderRequest;
-import com.dacn.WebsiteBanDoCongNghe.dto.request.UpdateOrderRequest;
+import com.dacn.WebsiteBanDoCongNghe.dto.request.*;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.*;
 import com.dacn.WebsiteBanDoCongNghe.entity.*;
 import com.dacn.WebsiteBanDoCongNghe.enums.OrderStatus;
@@ -40,7 +38,6 @@ import java.util.stream.Collectors;
 public class OrderService {
     OrderRepository orderRepository;
     OrderMapper orderMapper;
-    CartRepository cartRepository;
     UserReponsitory userReponsitory;
     VNPAYPaymentService vnpayPaymentService;
     DiscountService discountService;
@@ -82,11 +79,18 @@ public class OrderService {
                     Product product = productReponsitory.findById(orderDetailsRequest.getProductId())
                             .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
 
+                    if(product.getQuantity() < orderDetailsRequest.getQuantity()){
+                        throw new AppException(ErrorCode.QUANTITY_PRODUCT_NOT_ENOUGH);
+                    }
+                    product.setQuantity(product.getQuantity() - orderDetailsRequest.getQuantity());
+                    product.setStatus(product.getQuantity() == 0 ? "Hết hàng" : "Còn hàng");
+                    productReponsitory.save(product);
+
 
                     OrderDetails orderDetail = orderMapper.toOrderDetails(orderDetailsRequest);
                     orderDetail.setProduct(product);
                     orderDetail.setQuantity(orderDetailsRequest.getQuantity());
-                    orderDetail.setTotalPrice(orderDetailsRequest.getQuantity() * orderDetailsRequest.getProductPrice());
+                    orderDetail.setTotalPrice(orderDetailsRequest.getProductPrice() * orderDetailsRequest.getQuantity());
                     orderDetail.setOrders(orders);
                     return orderDetail;
                 })
@@ -94,12 +98,11 @@ public class OrderService {
 
         orders.setOrderDetails(orderDetails);
 
-        double totalPrice = orderDetails.stream().mapToDouble(OrderDetails::getTotalPrice).sum();
-        orders.setTotalPrice(totalPrice);
 
         if(request.getDiscountId() != null){
             discountService.applyDiscount(request.getDiscountId(), user,orders);
         }
+        orders.setTotalPrice(request.getAmount());
 
         if (request.getPayment() == 1) {
             VNPAYPaymentsResponse vnpayPaymentsResponse = vnpayPaymentService.createVnPayPayment(httpServletRequest, transactionId, orders);
@@ -117,7 +120,6 @@ public class OrderService {
 
             return orderMapper.toResponseOrder(orders);
         }
-
     }
 
     public boolean payCallbackHandler(HttpServletRequest request) {

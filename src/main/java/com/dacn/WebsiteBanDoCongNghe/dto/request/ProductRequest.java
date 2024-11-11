@@ -1,6 +1,5 @@
 package com.dacn.WebsiteBanDoCongNghe.dto.request;
 
-import com.dacn.WebsiteBanDoCongNghe.entity.Category;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;

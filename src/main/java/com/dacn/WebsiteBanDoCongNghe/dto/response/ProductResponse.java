@@ -16,12 +16,15 @@ public class ProductResponse {
     Long id;
     String name;
     double price;
+    double priceSale;
     String description;
     List<String> images;
     String categoryName;
     LocalDate dateCreated;
     LocalDate dateUpdated;
     String brandName;
+    Long quantity;
+    String status;
     String chip;
     String card;
     String ram;
