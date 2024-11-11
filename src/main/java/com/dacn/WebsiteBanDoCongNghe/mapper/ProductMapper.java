@@ -1,7 +1,6 @@
 package com.dacn.WebsiteBanDoCongNghe.mapper;
 
-import com.dacn.WebsiteBanDoCongNghe.dto.request.ProductRequest;
-import com.dacn.WebsiteBanDoCongNghe.dto.request.ProductUpdatedRequest;
+import com.dacn.WebsiteBanDoCongNghe.dto.request.*;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ProductResponse;
 import com.dacn.WebsiteBanDoCongNghe.entity.Image;
 import com.dacn.WebsiteBanDoCongNghe.entity.Product;
@@ -23,7 +22,20 @@ public interface ProductMapper {
     @Mapping(source = "brand.name", target = "brandName")
     ProductResponse toProductResponse(Product product);
 
+    @Mapping(target = "name", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "price", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "priceSale", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "quantity", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "status", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "description", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "chip", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "card", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "ram", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "screen", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void toUpdateProduct(@MappingTarget Product product, ProductUpdatedRequest request);
+
+
+    void toUpdateQuantityAndStatus(@MappingTarget Product product, ProductUpdatedStatusAndQuantityRequest request);
 
 //    Chuyển danh sách ảnh thành danh sách đường dẫn
     default List<String> mapImagesToPaths(List<Image> images) {

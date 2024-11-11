@@ -18,4 +18,5 @@ public class OrderRequest {
     @Max(value = 1, message = "MAX_ORDER")
     Integer payment;
     Long discountId;
+    Double amount;
 }

@@ -2,6 +2,7 @@ package com.dacn.WebsiteBanDoCongNghe.service;
 
 import com.dacn.WebsiteBanDoCongNghe.dto.request.ProductRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.ProductUpdatedRequest;
+import com.dacn.WebsiteBanDoCongNghe.dto.request.ProductUpdatedStatusAndQuantityRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.SearchRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ProductResponse;
 import com.dacn.WebsiteBanDoCongNghe.entity.Brand;
@@ -79,6 +80,13 @@ public class ProductService {
 //    Get Product by Id
     public ProductResponse getProductById(Long id){
         return productMapper.toProductResponse(productReponsitory.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED)));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public ProductResponse updateQuantityAndStatus(Long id, ProductUpdatedStatusAndQuantityRequest request){
+        Product product = productReponsitory.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
+        productMapper.toUpdateQuantityAndStatus(product,request);
+        return productMapper.toProductResponse(productReponsitory.save(product));
     }
 
 //    Updated Product

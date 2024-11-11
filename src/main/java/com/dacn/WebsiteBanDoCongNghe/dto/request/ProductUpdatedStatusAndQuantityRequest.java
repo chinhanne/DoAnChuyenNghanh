@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductUpdatedStatus {
+public class ProductUpdatedStatusAndQuantityRequest {
     Long quantity;
     String status;
 

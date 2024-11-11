@@ -2,6 +2,7 @@ package com.dacn.WebsiteBanDoCongNghe.controller;
 
 import com.dacn.WebsiteBanDoCongNghe.dto.request.ProductRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.ProductUpdatedRequest;
+import com.dacn.WebsiteBanDoCongNghe.dto.request.ProductUpdatedStatusAndQuantityRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.SearchRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ApiResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ProductResponse;
@@ -52,6 +53,14 @@ public class ProductController {
     public ApiResponse<ProductResponse> updateProduct(@PathVariable Long id, @ModelAttribute @Valid ProductUpdatedRequest request) throws IOException {
         return ApiResponse.<ProductResponse>builder()
                 .result(productService.updateProduct(id,request))
+                .build();
+    }
+
+    //    Updated quantity and status product
+    @PutMapping("/update-quantity-status/{id}")
+    public ApiResponse<ProductResponse> updateQuantityAndStatus(@PathVariable Long id, @RequestBody ProductUpdatedStatusAndQuantityRequest request) throws IOException {
+        return ApiResponse.<ProductResponse>builder()
+                .result(productService.updateQuantityAndStatus(id,request))
                 .build();
     }
 

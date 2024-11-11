@@ -26,6 +26,7 @@ public class Product {
     LocalDate dateCreated;
     LocalDate dateUpdated;
     Long quantity;
+    String status = "Còn Hàng";
     @ManyToOne
     @JoinColumn(name = "category_id")
     Category category;
@@ -49,11 +50,21 @@ public class Product {
     public void prePersist() {
         this.dateCreated = LocalDate.now();
         this.dateUpdated = LocalDate.now();
+        updateStatusBasedOnQuantity();
     }
 
 //    Khởi tạo thời gian update sản phẩm
     @PreUpdate
     public void preUpdate() {
         this.dateUpdated = LocalDate.now();
+        updateStatusBasedOnQuantity();
+    }
+
+    public void updateStatusBasedOnQuantity() {
+        if (this.quantity != null && this.quantity > 0) {
+            this.status = "Còn Hàng";
+        } else {
+            this.status = "Hết Hàng";
+        }
     }
 }

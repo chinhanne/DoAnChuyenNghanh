@@ -65,6 +65,7 @@ public enum ErrorCode {
     PASSWORD_CONFIRMATION_MISMATCH(1050, "Xác nhận mật khẩu không đúng",HttpStatus.BAD_REQUEST),
     QUANTITY_PRODUCT_NOT_NULL(1051, "Số lượng sản phẩm không được bỏ trống và giá trị của nó phải lớn hơn hoặc bằng 0.",HttpStatus.BAD_REQUEST),
     PRICE_SALE_PRODUCT_NOT_NULL(1052, "Giá giảm của sản phẩm phải lớn hơn hoặc bằng 0 và không được bỏ trống.",HttpStatus.BAD_REQUEST),
+    QUANTITY_PRODUCT_NOT_ENOUGH(1053, "Số lượng sản phẩm không đủ.",HttpStatus.BAD_REQUEST),
     ;
 
     int code;
