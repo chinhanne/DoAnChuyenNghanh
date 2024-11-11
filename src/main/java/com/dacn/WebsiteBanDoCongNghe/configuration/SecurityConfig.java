@@ -46,6 +46,10 @@ public class SecurityConfig {
 
         httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
         httpSecurity.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+
+//        httpSecurity.headers(headers -> headers
+//                .cacheControl(cache -> cache.disable()) // Tắt caching
+//        );
         return httpSecurity.build();
     }
 

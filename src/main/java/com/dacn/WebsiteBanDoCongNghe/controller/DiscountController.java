@@ -3,6 +3,7 @@ package com.dacn.WebsiteBanDoCongNghe.controller;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.DiscountRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ApiResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.DiscountResponse;
+import com.dacn.WebsiteBanDoCongNghe.entity.User;
 import com.dacn.WebsiteBanDoCongNghe.service.DiscountService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -37,6 +38,13 @@ public class DiscountController {
     public ApiResponse<List<DiscountResponse>> getAll(){
         return ApiResponse.<List<DiscountResponse>>builder()
                 .result(discountService.getAllDiscount())
+                .build();
+    }
+
+    @GetMapping("/{code}")
+    public ApiResponse<DiscountResponse> getDiscountByCode(@PathVariable String code){
+        return ApiResponse.<DiscountResponse>builder()
+                .result(discountService.getDiscountByCode(code))
                 .build();
     }
 

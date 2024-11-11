@@ -11,10 +11,13 @@ import com.dacn.WebsiteBanDoCongNghe.exception.ErrorCode;
 import com.dacn.WebsiteBanDoCongNghe.mapper.DiscountMapper;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.DiscountRepository;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.DiscountUsageRepository;
+import com.dacn.WebsiteBanDoCongNghe.reponsitory.UserReponsitory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,6 +33,7 @@ public class DiscountService {
     DiscountRepository discountRepository;
     DiscountUsageRepository discountUsageRepository;
     DiscountMapper discountMapper;
+    UserReponsitory userReponsitory;
 
 // Hàm generate mã code ngẫu nhiên
     public String generateDiscountCode(Discount discount){
@@ -40,7 +44,7 @@ public class DiscountService {
 
         String discountValue;
         if(discount.getDiscountType() == DiscountType.PERCENTAGE){
-            discountValue = String.format("%02d", discount.getDiscountValue().intValue()) + "%";
+            discountValue = String.format("%02d", discount.getDiscountValue().intValue()) + "PT";
         }else{
             discountValue = String.format("%02d", discount.getDiscountValue().intValue()) + "K";
         }
@@ -63,14 +67,7 @@ public class DiscountService {
             throw new AppException(ErrorCode.END_OF_USE);
         }
 
-//        if (!isMinOrderAmount(order, discount)) {
-//            throw new AppException(ErrorCode.DISCOUNT_NOT_VALUE);
-//        }
-
-//        double discountPrice = calculateDiscount(discount,order);
-
         order.setDiscount(discount);
-//        order.setTotalPrice(discountPrice);
 
         DiscountUsage discountUsage = new DiscountUsage();
         discountUsage.setUser(user);
@@ -103,7 +100,39 @@ public class DiscountService {
         return discountRepository.findAll().stream().map(discount -> discountMapper.toDiscountResponse(discount)).toList();
     }
 
-//    Update Discound
+    private User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new AppException(ErrorCode.INVALID_TOKEN);
+        }
+
+        String username = authentication.getName();
+        return userReponsitory.findByUsername(username)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+    }
+
+//    Get discount by code
+    public DiscountResponse getDiscountByCode(String code) {
+        User user = getAuthenticatedUser();
+
+        Discount discount = discountRepository.findByCode(code)
+                .orElseThrow(() -> new AppException(ErrorCode.DISCOUNT_NOT_EXISTED));
+
+        if (LocalDateTime.now().isAfter(discount.getExpirationDate())) {
+            throw new AppException(ErrorCode.TIME_EXPIRED);
+        }
+
+        long usageCount = discountUsageRepository.countByDiscountAndUser(discount, user);
+        if (usageCount >= discount.getMaxUsagePerUser()) {
+            throw new AppException(ErrorCode.END_OF_USE);
+        }
+
+        return discountMapper.toDiscountResponse(discount);
+    }
+
+
+    //    Update Discound
     @PreAuthorize("hasRole('ADMIN')")
     public DiscountResponse updateDiscount(Long id, DiscountRequest request){
         Discount discount = discountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.DISCOUNT_NOT_EXISTED));
@@ -134,52 +163,5 @@ public class DiscountService {
         }
         discountRepository.deleteById(id);
     }
-
-////    Hàm kiểm tra xem tiên order hoặc sản phẩmcosos thỏa điều kiện không
-//    private boolean isMinOrderAmount( Orders order, Discount discount) {
-//        if (discount.getDiscountScope() == DiscountScope.ORDER) {
-//            return order.getTotalPrice() >= discount.getMinOrderAmount();
-//        } else if (discount.getDiscountScope() == DiscountScope.PRODUCT) {
-//            return order.getOrderDetails().stream()
-//                    .anyMatch(detail -> detail.getProduct().getPrice() >=  discount.getMinOrderAmount());
-//        }
-//        return false;
-//    }
-//
-//    //    Hàm tính tiền khi có mã giảm giá
-//    private double calculateDiscount(Discount discount, Orders orders){
-//        double discountPrice = 0;
-//
-//        if(discount.getDiscountScope() == DiscountScope.ORDER){
-//            double totalPrice = orders.getTotalPrice();
-//
-//            if(discount.getDiscountType() == DiscountType.PERCENTAGE){
-//                discountPrice = totalPrice - (totalPrice * discount.getDiscountValue() / 100);
-//
-//            }else{
-//                discountPrice = totalPrice - discount.getDiscountValue()*1000;
-//            }
-//            orders.setTotalPrice(discountPrice);
-//        }else if(discount.getDiscountScope() == DiscountScope.PRODUCT){
-//            discountPrice = orders.getOrderDetails().stream().mapToDouble(
-//                    detail -> {
-//                        double productPrice = detail.getProduct().getPrice();
-//                        double discountedPrice = productPrice;
-//
-//                        if (productPrice >= discount.getMinOrderAmount()) {
-//                            if (discount.getDiscountType() == DiscountType.PERCENTAGE) {
-//                                discountedPrice = productPrice - (productPrice * discount.getDiscountValue() / 100);
-//                            } else {
-//                                discountedPrice = productPrice - discount.getDiscountValue()*1000;
-//                            }
-//                        }
-//
-//                        detail.setTotalPrice(discountedPrice * detail.getQuantity());
-//                        return detail.getTotalPrice();
-//                    }).sum();
-//            orders.setTotalPrice(discountPrice);
-//        }
-//        return discountPrice;
-//    }
 
 }
