@@ -44,9 +44,6 @@ public enum ErrorCode {
     CONTENT_COMMENT_NOT_NULL(1029,"Nội dung comment không được bỏ trống", HttpStatus.BAD_REQUEST),
     PARENT_COMMENT_NOT_FOUND(1030,"Comment cha không tồn tại", HttpStatus.BAD_REQUEST),
     COMMENT_NOT_EXISTED(1031,"Bình luận không tồn tại",HttpStatus.BAD_REQUEST),
-    CART_NOT_EXISTED(1032,"Giỏ hàng không tồn tại",HttpStatus.BAD_REQUEST),
-    CART_ITEM_NOT_EXISTED(1033,"Sản phẩm không tồn tại trong giỏ hàng",HttpStatus.BAD_REQUEST),
-    INVALID_CART_ITEM(1034,"Không có quyền cập nhật giỏ hàng",HttpStatus.BAD_REQUEST),
     INVALID_TOKEN(1035,"Token không hợp lệ",HttpStatus.BAD_REQUEST),
     ORDER_NOT_EXISTED(1036,"Hóa đơn không tồn tại",HttpStatus.BAD_REQUEST),
     MIN_ORDER(1037,"Hóa đơn chỉ thanh toán bằng VnPay hoặc thanh toán khi nhân hàng",HttpStatus.BAD_REQUEST),
@@ -66,6 +63,7 @@ public enum ErrorCode {
     QUANTITY_PRODUCT_NOT_NULL(1051, "Số lượng sản phẩm không được bỏ trống và giá trị của nó phải lớn hơn hoặc bằng 0.",HttpStatus.BAD_REQUEST),
     PRICE_SALE_PRODUCT_NOT_NULL(1052, "Giá giảm của sản phẩm phải lớn hơn hoặc bằng 0 và không được bỏ trống.",HttpStatus.BAD_REQUEST),
     QUANTITY_PRODUCT_NOT_ENOUGH(1053, "Số lượng sản phẩm không đủ.",HttpStatus.BAD_REQUEST),
+    FLASH_SALE_NOT_EXISTED(1054, "Không tìm thấy chương trình giảm giá.",HttpStatus.BAD_REQUEST),
     ;
 
     int code;

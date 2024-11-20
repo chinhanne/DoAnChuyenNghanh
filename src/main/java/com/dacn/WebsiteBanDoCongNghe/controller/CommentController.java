@@ -4,10 +4,6 @@ import com.dacn.WebsiteBanDoCongNghe.dto.request.CommentRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UpdateCommentDisplayRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ApiResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.CommentResponse;
-import com.dacn.WebsiteBanDoCongNghe.entity.Comment;
-import com.dacn.WebsiteBanDoCongNghe.entity.User;
-import com.dacn.WebsiteBanDoCongNghe.exception.AppException;
-import com.dacn.WebsiteBanDoCongNghe.exception.ErrorCode;
 import com.dacn.WebsiteBanDoCongNghe.service.CommentService;
 import com.dacn.WebsiteBanDoCongNghe.service.UserService;
 import jakarta.validation.Valid;
@@ -15,7 +11,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

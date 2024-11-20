@@ -136,6 +136,7 @@ public class AuthenticationService {
                .claim("gender",user.getGender())
                .claim("address", user.getAddress())
                .claim("numberPhone", user.getNumberPhone())
+               .claim("id", user.getId())
                .expirationTime(new Date(Instant.now().plus(VALID_DURATION, ChronoUnit.SECONDS).toEpochMilli())) // Thoi gian het han
                .jwtID(UUID.randomUUID().toString())
                .claim("scope",buildScope(user))

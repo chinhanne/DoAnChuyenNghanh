@@ -2,16 +2,13 @@ package com.dacn.WebsiteBanDoCongNghe.controller;
 
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ApiResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.VNPAYPaymentsResponse;
-import com.dacn.WebsiteBanDoCongNghe.entity.Cart;
 import com.dacn.WebsiteBanDoCongNghe.entity.Orders;
-import com.dacn.WebsiteBanDoCongNghe.entity.User;
 import com.dacn.WebsiteBanDoCongNghe.service.OrderService;
 import com.dacn.WebsiteBanDoCongNghe.service.VNPAYPaymentService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

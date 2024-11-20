@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommentResponse {
+    Long id;
     String productName;
     String userName;
     String content;

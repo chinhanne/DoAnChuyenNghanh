@@ -15,7 +15,7 @@ public class CommentRequest {
     Long productId;
     @NotNull(message = "USER_ID_NOT_NULL")
     String userId;
-    Long parentCommentId = null;
+    Long parentCommentId;
     @NotBlank(message = "CONTENT_COMMENT_NOT_NULL")
     String content;
 }

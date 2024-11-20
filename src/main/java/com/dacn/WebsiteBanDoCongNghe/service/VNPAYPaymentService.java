@@ -2,12 +2,10 @@ package com.dacn.WebsiteBanDoCongNghe.service;
 
 import com.dacn.WebsiteBanDoCongNghe.configuration.VnPayConfig;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.VNPAYPaymentsResponse;
-import com.dacn.WebsiteBanDoCongNghe.entity.Cart;
 import com.dacn.WebsiteBanDoCongNghe.entity.Orders;
 import com.dacn.WebsiteBanDoCongNghe.entity.User;
 import com.dacn.WebsiteBanDoCongNghe.exception.AppException;
 import com.dacn.WebsiteBanDoCongNghe.exception.ErrorCode;
-import com.dacn.WebsiteBanDoCongNghe.reponsitory.CartRepository;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.UserReponsitory;
 import com.dacn.WebsiteBanDoCongNghe.utils.VnPayUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +24,6 @@ import java.util.Map;
 public class VNPAYPaymentService {
     VnPayConfig vnPayConfig;
     UserReponsitory userReponsitory;
-    CartRepository cartRepository;
 
     private User getAuthenticatedUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

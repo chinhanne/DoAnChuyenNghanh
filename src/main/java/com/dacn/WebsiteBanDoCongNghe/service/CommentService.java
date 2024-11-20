@@ -59,11 +59,7 @@ public class CommentService {
         return commentMapper.toCommentResponse(comment);
     }
 
-//    Lấy comment theo product
-    public List<CommentResponse> getCommentByProduct(Long productId){
-        List<Comment> comments = commentReponsitory.findByProductId(productId);
-        return comments.stream().map(comment -> commentMapper.toCommentResponse(comment)).collect(Collectors.toList());
-    }
+
 
 //    Update Comment
     @PreAuthorize("hasRole('ADMIN') or @commentService.isCommentOwner(#id, authentication)")
@@ -124,6 +120,11 @@ public class CommentService {
         commentReponsitory.delete(comment);
     }
 
+    //    Lấy comment theo product
+    public List<CommentResponse> getCommentByProduct(Long productId){
+        List<Comment> comments = commentReponsitory.findByProductId(productId);
+        return comments.stream().map(comment -> commentMapper.toCommentResponse(comment)).collect(Collectors.toList());
+    }
 
     //     Lấy comment cha và các comment con của nó
     public CommentResponse getCommentWithChildren(Long id) {
