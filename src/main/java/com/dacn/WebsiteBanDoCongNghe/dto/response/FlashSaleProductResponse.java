@@ -1,16 +1,19 @@
-package com.dacn.WebsiteBanDoCongNghe.dto.request;
+package com.dacn.WebsiteBanDoCongNghe.dto.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CartItemRequest {
+public class FlashSaleProductResponse {
     Long productId;
-    Integer quantity;
+    Long flashSaleId;
+    Double priceSale;
 }

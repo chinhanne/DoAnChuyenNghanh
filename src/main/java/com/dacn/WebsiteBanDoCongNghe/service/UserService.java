@@ -16,9 +16,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,7 +37,6 @@ public class UserService {
     UserMapper userMapper;
     RoleReponsitory roleReponsitory;
     PasswordEncoder passwordEncoder;
-    CartService cartService;
     FileStorageService fileStorageService;
 
 //    Create User
@@ -63,7 +59,6 @@ public class UserService {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
 
-        cartService.createdCartForUser(user);
 
         // Chuyển đối tượng User thành UserResponse
         return userMapper.toUserResponse(user);
@@ -104,7 +99,6 @@ public class UserService {
         user.setGender(request.getGender());
         user.setAddress(request.getAddress());
         user.setNumberPhone(request.getNumberPhone());
-        cartService.createdCartForUser(user);
 
         userReponsitory.save(user);
     }

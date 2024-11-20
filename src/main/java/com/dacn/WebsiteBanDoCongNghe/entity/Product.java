@@ -21,12 +21,12 @@ public class Product {
     Long id;
     String name;
     double price;
-    double priceSale;
+    Double priceSale;
     String description;
     LocalDate dateCreated;
     LocalDate dateUpdated;
     Long quantity;
-    String status = "Còn Hàng";
+    String status;
     @ManyToOne
     @JoinColumn(name = "category_id")
     Category category;

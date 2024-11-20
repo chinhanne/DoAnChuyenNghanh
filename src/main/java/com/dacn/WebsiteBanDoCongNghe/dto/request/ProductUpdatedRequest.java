@@ -18,8 +18,6 @@ public class ProductUpdatedRequest {
     String name;
     @Min(value = 0, message = "PRICE_PRODUCT_NOT_NULL")
     double price;
-    @Min(value = 0, message = "PRICE_SALE_PRODUCT_NOT_NULL")
-    double priceSale;
     @Min(value = 0, message = "QUANTITY_PRODUCT_NOT_NULL")
     Long quantity;
     String status;

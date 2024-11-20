@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ChildCommentResponse {
+    Long id;
+    Long parentId;
     String userName;
     String content;
     boolean display;
