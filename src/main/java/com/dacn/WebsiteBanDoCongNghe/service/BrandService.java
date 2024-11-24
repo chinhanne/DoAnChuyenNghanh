@@ -48,7 +48,6 @@ public class BrandService {
     }
 
 //    GetAll category
-//    @PreAuthorize("hasRole('ADMIN')")
     public List<BrandResponse> getAllBrand(){
         return brandRepository.findAll().stream().map(brandMapper::toBrandResponse).toList();
     }

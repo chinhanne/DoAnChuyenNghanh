@@ -65,21 +65,30 @@ public class ProductController {
     }
 
 //    Search Product
-        @GetMapping("/search")
-        public ApiResponse<List<ProductResponse>> search(
-                @RequestParam(required = false) String categoryName,
-                @RequestParam(required = false) String brandName,
-                @RequestParam(required = false) Double price
-        ){
-            SearchRequest searchRequest = new SearchRequest();
-            searchRequest.setCategoryName(categoryName);
-            searchRequest.setBrandName(brandName);
-            searchRequest.setPrice(price);
+    @GetMapping("/search")
+    public ApiResponse<List<ProductResponse>> search(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String categoryName,
+            @RequestParam(required = false) String brandName,
+            @RequestParam(required = false) Double price
+    ){
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.setName(name);
+        searchRequest.setCategoryName(categoryName);
+        searchRequest.setBrandName(brandName);
+        searchRequest.setPrice(price);
 
-            return ApiResponse.<List<ProductResponse>>builder()
-                    .result(productService.getProductFilter(searchRequest))
-                    .build();
-        }
+        return ApiResponse.<List<ProductResponse>>builder()
+                .result(productService.getProductFilter(searchRequest))
+                .build();
+    }
+
+    @GetMapping("/header-search")
+    public ApiResponse<List<ProductResponse>> searchHeader(@RequestParam(required = false) String keyword){
+        return ApiResponse.<List<ProductResponse>>builder()
+                .result(productService.searchByKeyword(keyword))
+                .build();
+    }
 
 //    Delete product
     @DeleteMapping("/{id}")

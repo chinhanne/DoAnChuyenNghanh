@@ -32,7 +32,7 @@ payment:
 
 outbound:
   identity:
-      client-id: "210037085601-c5cc540lfikklmmrti82rfnivri4q2tu.apps.googleusercontent.com"
-      client-secret: "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"
-      redirect-uri: "http://localhost:3000/authenticate"
-      grant-type: "authorization_code"
+    client-id: "210037085601-c5cc540lfikklmmrti82rfnivri4q2tu.apps.googleusercontent.com"
+    client-secret: "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"
+    redirect-uri: "http://localhost:3000/authenticate"
+    grant-type: "authorization_code"

@@ -42,6 +42,8 @@ public class FlashSaleService {
                         .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
 
                 double priceSale = product.getPrice() - (product.getPrice() * (request.getDiscountPercentage() / 100.0));
+                product.setPriceSale(priceSale);
+                productReponsitory.save(product);
 
                 FlashSaleProduct flashSaleProduct = flashSaleMapper.toFlashSaleProduct(flashSaleProductRequest);
                 flashSaleProduct.setProduct(product);
@@ -76,6 +78,8 @@ public class FlashSaleService {
             Product product = productReponsitory.findById(productRequest.getProductId()).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
 
             double priceSale = product.getPrice() - (product.getPrice() * request.getDiscountPercentage() / 100.0);
+            product.setPriceSale(priceSale);
+            productReponsitory.save(product);
 
             FlashSaleProduct existingProduct = currentFlashSaleProduct.stream()
                     .filter(p -> p.getProduct().getId().equals(productRequest.getProductId()))
@@ -100,8 +104,14 @@ public class FlashSaleService {
     }
 
     public void deleteFlashSale(Long id){
-        if(!flashSaleRepository.existsById(id)){
-            throw new AppException(ErrorCode.FLASH_SALE_NOT_EXISTED);
+        FlashSale flashSale = flashSaleRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.FLASH_SALE_NOT_EXISTED));
+
+        // Khôi phục giá gốc cho tất cả sản phẩm trong FlashSale
+        for (FlashSaleProduct flashSaleProduct : flashSale.getFlashSaleProducts()) {
+            Product product = flashSaleProduct.getProduct();
+            product.setPriceSale(0.0);
+            productReponsitory.save(product);
         }
         flashSaleRepository.deleteById(id);
     }
