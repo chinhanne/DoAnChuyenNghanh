@@ -18,9 +18,6 @@ import com.dacn.WebsiteBanDoCongNghe.reponsitory.ProductReponsitory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -128,22 +125,44 @@ public class ProductService {
     }
 
 //    Filter by product name and categoryId and price
-public List<ProductResponse> getProductFilter(SearchRequest request) {
-    List<Product> allProducts = productReponsitory.findAll();
+    public List<ProductResponse> getProductFilter(SearchRequest request) {
+        List<Product> allProducts = productReponsitory.findAll();
 
-    List<Product> filteredProducts = allProducts.stream()
-            .filter(product -> (request.getCategoryName() == null ||
-                    (product.getCategory() != null && product.getCategory().getName().toLowerCase().contains(request.getCategoryName().toLowerCase()))))
-            .filter(product -> (request.getBrandName() == null ||
-                    (product.getBrand() != null && product.getBrand().getName().toLowerCase().contains(request.getBrandName().toLowerCase()))))
-            .filter(product -> (request.getPrice() == null || product.getPrice() <= request.getPrice()))
-            .collect(Collectors.toList());
+        List<Product> filteredProducts = allProducts.stream()
+                .filter(product -> (request.getName() == null || (product.getName().toLowerCase().contains(request.getName().toLowerCase()))))
+                .filter(product -> (request.getCategoryName() == null ||
+                        (product.getCategory() != null && product.getCategory().getName().toLowerCase().contains(request.getCategoryName().toLowerCase()))))
+                .filter(product -> (request.getBrandName() == null ||
+                        (product.getBrand() != null && product.getBrand().getName().toLowerCase().contains(request.getBrandName().toLowerCase()))))
+                .filter(product -> (request.getPrice() == null || product.getPrice() <= request.getPrice()))
+                .collect(Collectors.toList());
 
-    return filteredProducts.stream()
-            .map(product -> productMapper.toProductResponse(product))
-            .collect(Collectors.toList());
-}
+        return filteredProducts.stream()
+                .map(product -> productMapper.toProductResponse(product))
+                .collect(Collectors.toList());
+    }
 
+//    Search
+    public List<ProductResponse> searchByKeyword(String keyword){
+        List<Product> products = productReponsitory.findByNameContainingIgnoreCase(keyword);
+        if(!products.isEmpty()){
+            return products.stream().map(productMapper::toProductResponse).collect(Collectors.toList());
+        }
+
+        List<Category> categories = categoryReponsitory.findByNameContainingIgnoreCase(keyword);
+        if(!categories.isEmpty()){
+            List<Product> productByCategory = productReponsitory.findByCategoryIn(categories);
+            return productByCategory.stream().map(productMapper::toProductResponse).collect(Collectors.toList());
+        }
+
+        List<Brand> brands = brandRepository.findByNameContainingIgnoreCase(keyword);
+        if(!brands.isEmpty()){
+            List<Product> productByBrand = productReponsitory.findByBrandIn(brands);
+            return productByBrand.stream().map(productMapper::toProductResponse).collect(Collectors.toList());
+        }
+
+        return new ArrayList<>();
+    }
 
     //    Delete Product
     @PreAuthorize("hasRole('ADMIN')")

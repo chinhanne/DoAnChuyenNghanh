@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SearchRequest {
+    String name;
     String categoryName;
     Double price;
     String brandName;

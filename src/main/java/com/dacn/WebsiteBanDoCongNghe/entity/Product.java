@@ -50,6 +50,7 @@ public class Product {
     public void prePersist() {
         this.dateCreated = LocalDate.now();
         this.dateUpdated = LocalDate.now();
+        this.priceSale = 0.0;
         updateStatusBasedOnQuantity();
     }
 

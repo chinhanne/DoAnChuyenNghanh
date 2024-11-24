@@ -21,6 +21,7 @@ public interface CommentMapper {
     @Mapping(source = "product.name", target = "productName")
     @Mapping(source = "user.username", target = "userName")
     @Mapping(source = "childComments", target = "childComments")  // Đảm bảo ánh xạ đúng childComments
+    @Mapping(source = "parentComment.id", target = "parentId")
     CommentResponse toCommentResponse(Comment comment);
 
     @Mapping(source = "user.username", target = "userName")
