@@ -37,4 +37,10 @@ public class Discount {
 
     @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL)
     List<DiscountUsage> discountUsages = new ArrayList<>();
+    Boolean isDelete = false;
+
+    @PrePersist
+    public void prePersist() {
+        this.isDelete = false;
+    }
 }

@@ -5,6 +5,7 @@ import com.dacn.WebsiteBanDoCongNghe.dto.request.UserInfoLoginGoogleCreateReques
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UserUpdatePasswordRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.UserUpdateRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ApiResponse;
+import com.dacn.WebsiteBanDoCongNghe.dto.response.ProductResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.UserResponse;
 import com.dacn.WebsiteBanDoCongNghe.service.UserService;
 import jakarta.validation.Valid;
@@ -66,6 +67,14 @@ public class UserController {
                 .build();
     }
 
+//    Get all user is delete soft
+    @GetMapping("/list-user-delete-soft")
+    public ApiResponse<List<UserResponse>> listUserSoft(){
+        return ApiResponse.<List<UserResponse>>builder()
+                .result(userService.getAllUserIsDelete())
+                .build();
+    }
+
 //    Update User
     @PutMapping("/{id}")
     public ApiResponse<UserResponse> updateUser(@PathVariable String id,
@@ -95,12 +104,30 @@ public class UserController {
                 .build();
     }
 
+//    Restore user after delete soft
+    @PutMapping("/restore/{id}")
+    public ApiResponse<String> restoreProduct(@PathVariable String id) {
+        userService.restoreUser(id);
+        return ApiResponse.<String>builder()
+                .result("Người dùng đã được khôi phục thành công")
+                .build();
+    }
+
 //    Delete User
     @DeleteMapping("/{id}")
     public ApiResponse<String> deleteUser(@PathVariable String id){
         userService.deleteUser(id);
         return ApiResponse.<String>builder()
                 .result("Người dùng đã được xóa")
+                .build();
+    }
+
+//    Delete soft user
+    @DeleteMapping("/soft-user/{id}")
+    public ApiResponse<String> deleteUserSoft(@PathVariable String id) {
+        userService.deleteSoftUser(id);
+        return ApiResponse.<String>builder()
+                .result("Người dùng đã được xóa thành công")
                 .build();
     }
 }

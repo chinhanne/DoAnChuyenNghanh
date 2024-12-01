@@ -22,12 +22,14 @@ public class Category {
     String image;
     LocalDateTime dateCreated;
     LocalDateTime dateUpdated;
+    Boolean isDelete = false;
 
     //    Khởi tạo thời gian tạo comment
     @PrePersist
     public void prePersist() {
         this.dateCreated = LocalDateTime.now();
         this.dateUpdated = LocalDateTime.now();
+        this.isDelete = false;
     }
 
     //    Khởi tạo thời gian update comment

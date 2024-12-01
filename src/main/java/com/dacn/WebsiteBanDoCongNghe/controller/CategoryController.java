@@ -2,6 +2,7 @@ package com.dacn.WebsiteBanDoCongNghe.controller;
 
 import com.dacn.WebsiteBanDoCongNghe.dto.request.CategoryRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ApiResponse;
+import com.dacn.WebsiteBanDoCongNghe.dto.response.BrandResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.CategoryResponse;
 import com.dacn.WebsiteBanDoCongNghe.service.CategoryService;
 import jakarta.validation.Valid;
@@ -38,6 +39,15 @@ public class CategoryController {
                 .build();
     }
 
+    //    Restore category isDelete
+    @PutMapping("/restore/{id}")
+    public ApiResponse<String> restoreCategory(@PathVariable Long id) {
+        categoryService.restoreCategory(id);
+        return ApiResponse.<String>builder()
+                .result("Thể loại đã được khôi phục thành công")
+                .build();
+    }
+
 //    Get All Category
     @GetMapping
     public ApiResponse<List<CategoryResponse>> getAll(){
@@ -46,10 +56,27 @@ public class CategoryController {
                 .build();
     }
 
+    //    Get all category delete soft
+    @GetMapping("/list-category-delete-soft")
+    public ApiResponse<List<CategoryResponse>> listCategorySoft(){
+        return ApiResponse.<List<CategoryResponse>>builder()
+                .result(categoryService.getAllCategoryForIsDelete())
+                .build();
+    }
+
 //    Delete Category
     @DeleteMapping("/{id}")
     public ApiResponse<String> deleted(@PathVariable Long id){
         categoryService.deleteCategory(id);
+        return ApiResponse.<String>builder()
+                .result("Thể loại đã được xóa")
+                .build();
+    }
+
+//    Delete Soft Category
+    @DeleteMapping("/delete-soft-category/{id}")
+    public ApiResponse<String> deletedSoftCategory(@PathVariable Long id){
+        categoryService.deletedSoftCategory(id);
         return ApiResponse.<String>builder()
                 .result("Thể loại đã được xóa")
                 .build();

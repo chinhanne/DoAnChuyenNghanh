@@ -46,12 +46,13 @@ public class VNPAYPaymentService {
         vnpParamsMap.put("vnp_Amount", amount);
         vnpParamsMap.put("vnp_BankCode", bankCode);
         vnpParamsMap.put("vnp_IpAddr", VnPayUtils.getIpAddress(request));
+
         //build query url
         String queryUrl = VnPayUtils.getPaymentURL(vnpParamsMap, true);
         String hashData = VnPayUtils.getPaymentURL(vnpParamsMap, false);
         String vnpSecureHash = VnPayUtils.hmacSHA512(vnPayConfig.getSecretKey(), hashData);
         queryUrl += "&vnp_SecureHash=" + vnpSecureHash;
-        String paymentUrl = vnPayConfig.getVnp_PayUrl() + "?" + queryUrl;
+        String paymentUrl = vnPayConfig.getVnp_PayUrl()+ "?" + queryUrl;
         return VNPAYPaymentsResponse.builder()
                 .code("ok")
                 .message("Thành công")

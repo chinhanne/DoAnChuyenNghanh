@@ -22,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -109,11 +110,12 @@ public class OrderService {
             orders.setPayment(1);
             orderRepository.save(orders);
 
-            OrderResponse orderResponse = orderMapper.toResponseOrder(orders); // Chuyển đổi đơn hàng thành phản hồi
-            orderResponse.setPaymentUrl(vnpayPaymentsResponse.getPaymentUrl()); // Thiết lập paymentUrl
+            OrderResponse orderResponse = orderMapper.toResponseOrder(orders);
+            orderResponse.setPaymentUrl(vnpayPaymentsResponse.getPaymentUrl());
             orderResponse.setTransactionId(transactionId);
             orderResponse.setDiscountCode(orders.getDiscount() != null ? orders.getDiscount().getCode() : null);
             return orderResponse;
+
         } else {
             orders.setPayment(0);
             orderRepository.save(orders);
@@ -174,6 +176,7 @@ public class OrderService {
         return monthlyRevenueResponse;
     }
 
+//    Update status
     @PreAuthorize("hasRole('ADMIN')")
     public OrderResponse updateOrderStatus(UpdateOrderRequest request, Long orderId){
         Orders orders = orderRepository.findById(orderId)
@@ -201,6 +204,20 @@ public class OrderService {
     public OrderResponse getOrderById(Long orderId){
         return orderMapper.toResponseOrder(orderRepository.findById(orderId)
                 .orElseThrow(() -> new AppException(ErrorCode.ORDER_NOT_EXISTED)));
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    public List<OrderResponse> getHistoryOrderByUser(){
+        User user = getAuthenticatedUser();
+
+        List<Orders> orders = orderRepository.findByUserId(user.getId());
+
+        if(orders.isEmpty()){
+            throw  new AppException(ErrorCode.ORDER_NOT_EXISTED);
+        }
+
+        return orders.stream().map(orderMapper::toResponseOrder).collect(Collectors.toList());
+
     }
 
 //    Delete order

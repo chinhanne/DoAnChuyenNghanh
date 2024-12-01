@@ -29,4 +29,7 @@ public class ProductResponse {
     String card;
     String ram;
     String screen;
+    Boolean isDelete;
+    Boolean isBrandVisible;
+    Boolean isCategoryVisible;
 }

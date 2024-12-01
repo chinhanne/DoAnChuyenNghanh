@@ -66,6 +66,10 @@ public class DiscountService {
             throw new AppException(ErrorCode.END_OF_USE);
         }
 
+        if(discount.getIsDelete() == true){
+            throw new AppException(ErrorCode.DISCOUNT_NOT_EXISTED);
+        }
+
         order.setDiscount(discount);
 
         DiscountUsage discountUsage = new DiscountUsage();
@@ -161,6 +165,27 @@ public class DiscountService {
             throw new AppException(ErrorCode.DISCOUNT_NOT_EXISTED);
         }
         discountRepository.deleteById(id);
+    }
+
+//        Delete soft discount
+    public void deleteSoftDisCount(Long id){
+        Discount discount = discountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.DISCOUNT_NOT_EXISTED));
+        discount.setIsDelete(true);
+        discountRepository.save(discount);
+    }
+
+    //    Restore discount
+    public void restoreDiscount(Long id){
+        Discount discount = discountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.DISCOUNT_NOT_EXISTED));
+        discount.setIsDelete(false);
+        discountRepository.save(discount);
+    }
+
+//        Get all discount is deleted soft
+    public List<DiscountResponse> getAllDiscountIsDelete(){
+        return discountRepository.findAll().stream()
+                .filter(discount -> discount.getIsDelete())
+                .map(discountMapper::toDiscountResponse).toList();
     }
 
 }

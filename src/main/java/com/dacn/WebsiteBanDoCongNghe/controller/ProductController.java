@@ -48,23 +48,7 @@ public class ProductController {
                 .build();
     }
 
-//    Updated Product
-    @PutMapping("/{id}")
-    public ApiResponse<ProductResponse> updateProduct(@PathVariable Long id, @ModelAttribute @Valid ProductUpdatedRequest request) throws IOException {
-        return ApiResponse.<ProductResponse>builder()
-                .result(productService.updateProduct(id,request))
-                .build();
-    }
-
-    //    Updated quantity and status product
-    @PutMapping("/update-quantity-status/{id}")
-    public ApiResponse<ProductResponse> updateQuantityAndStatus(@PathVariable Long id, @RequestBody ProductUpdatedStatusAndQuantityRequest request) throws IOException {
-        return ApiResponse.<ProductResponse>builder()
-                .result(productService.updateQuantityAndStatus(id,request))
-                .build();
-    }
-
-//    Search Product
+    //    Search Product
     @GetMapping("/search")
     public ApiResponse<List<ProductResponse>> search(
             @RequestParam(required = false) String name,
@@ -90,6 +74,37 @@ public class ProductController {
                 .build();
     }
 
+    @GetMapping("/list-product-delete-soft")
+    public ApiResponse<List<ProductResponse>> listProductsSoft(){
+        return ApiResponse.<List<ProductResponse>>builder()
+                .result(productService.getAllProductsForIsDelete())
+                .build();
+    }
+
+//    Updated Product
+    @PutMapping("/{id}")
+    public ApiResponse<ProductResponse> updateProduct(@PathVariable Long id, @ModelAttribute @Valid ProductUpdatedRequest request) throws IOException {
+        return ApiResponse.<ProductResponse>builder()
+                .result(productService.updateProduct(id,request))
+                .build();
+    }
+
+    //    Updated quantity and status product
+    @PutMapping("/update-quantity-status/{id}")
+    public ApiResponse<ProductResponse> updateQuantityAndStatus(@PathVariable Long id, @RequestBody ProductUpdatedStatusAndQuantityRequest request) throws IOException {
+        return ApiResponse.<ProductResponse>builder()
+                .result(productService.updateQuantityAndStatus(id,request))
+                .build();
+    }
+
+    @PutMapping("/restore/{id}")
+    public ApiResponse<String> restoreProduct(@PathVariable Long id) {
+        productService.restoreProduct(id);
+        return ApiResponse.<String>builder()
+                .result("Sản phẩm đã được khôi phục thành công")
+                .build();
+    }
+
 //    Delete product
     @DeleteMapping("/{id}")
     public ApiResponse<String> deleteProduct(@PathVariable Long id){
@@ -97,4 +112,11 @@ public class ProductController {
         return ApiResponse.<String>builder().result("Xóa sản phẩm thành công").build();
     }
 
+    @DeleteMapping("/soft-product/{id}")
+    public ApiResponse<String> deleteProductSoft(@PathVariable Long id) {
+        productService.softDeleteProduct(id);
+        return ApiResponse.<String>builder()
+                .result("Sản phẩm đã được xóa thành công")
+                .build();
+    }
 }

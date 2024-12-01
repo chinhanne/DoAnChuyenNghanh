@@ -7,7 +7,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -41,4 +40,5 @@ public class Orders {
     @ManyToOne
     @JoinColumn(name = "discount_id")
     Discount discount;
+    Boolean isDelete = false;
 }
