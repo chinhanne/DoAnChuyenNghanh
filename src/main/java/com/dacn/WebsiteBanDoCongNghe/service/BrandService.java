@@ -2,11 +2,15 @@ package com.dacn.WebsiteBanDoCongNghe.service;
 
 import com.dacn.WebsiteBanDoCongNghe.dto.request.BrandRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.BrandResponse;
+import com.dacn.WebsiteBanDoCongNghe.dto.response.CategoryResponse;
 import com.dacn.WebsiteBanDoCongNghe.entity.Brand;
+import com.dacn.WebsiteBanDoCongNghe.entity.Category;
+import com.dacn.WebsiteBanDoCongNghe.entity.Product;
 import com.dacn.WebsiteBanDoCongNghe.exception.AppException;
 import com.dacn.WebsiteBanDoCongNghe.exception.ErrorCode;
 import com.dacn.WebsiteBanDoCongNghe.mapper.BrandMapper;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.BrandRepository;
+import com.dacn.WebsiteBanDoCongNghe.reponsitory.ProductReponsitory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -26,6 +30,7 @@ import java.util.List;
 public class BrandService {
     BrandRepository brandRepository;
     BrandMapper brandMapper;
+    ProductReponsitory productReponsitory;
 
 //    Created brand
     @PreAuthorize("hasRole('ADMIN')")
@@ -59,5 +64,37 @@ public class BrandService {
             throw new AppException(ErrorCode.BRAND_NOT_EXISTED);
         }
         brandRepository.deleteById(id);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deletedSoftBrand(Long brandId){
+        Brand brand = brandRepository.findById(brandId).orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_EXISTED));
+        brand.setIsDelete(true);
+        brandRepository.save(brand);
+
+        List<Product> products = productReponsitory.findByBrandIdAndIsDeleteFalse(brandId);
+        for(Product product : products){
+            product.setIsBrandVisible(false);
+            productReponsitory.save(product);
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public void restoreBrand(Long brandId){
+        Brand brand = brandRepository.findById(brandId).orElseThrow(() -> new AppException(ErrorCode.BRAND_NOT_EXISTED));
+        brand.setIsDelete(false);
+        brandRepository.save(brand);
+
+        List<Product> products = productReponsitory.findByBrandIdAndIsDeleteFalse(brandId);
+        for(Product product : products){
+            product.setIsBrandVisible(true);
+            productReponsitory.save(product);
+        }
+    }
+
+    public List<BrandResponse> getAllBrandForIsDelete() {
+        return brandRepository.findAll().stream()
+                .filter(brand -> brand.getIsDelete())
+                .map(brandMapper::toBrandResponse).toList();
     }
 }

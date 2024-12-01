@@ -3,6 +3,7 @@ package com.dacn.WebsiteBanDoCongNghe.controller;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.BrandRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ApiResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.BrandResponse;
+import com.dacn.WebsiteBanDoCongNghe.dto.response.ProductResponse;
 import com.dacn.WebsiteBanDoCongNghe.service.BrandService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -35,11 +36,28 @@ public class BrandController {
                 .build();
     }
 
+//    Restore brand isDelete
+    @PutMapping("/restore/{id}")
+    public ApiResponse<String> restoreBrand(@PathVariable Long id) {
+        brandService.restoreBrand(id);
+        return ApiResponse.<String>builder()
+                .result("Hãng đã được khôi phục thành công")
+                .build();
+    }
+
 //    Get All Brand
     @GetMapping
     public ApiResponse<List<BrandResponse>> getAll(){
         return ApiResponse.<List<BrandResponse>>builder()
                 .result(brandService.getAllBrand())
+                .build();
+    }
+
+//    Get all brand delete soft
+    @GetMapping("/list-brand-delete-soft")
+    public ApiResponse<List<BrandResponse>> listBrandsSoft(){
+        return ApiResponse.<List<BrandResponse>>builder()
+                .result(brandService.getAllBrandForIsDelete())
                 .build();
     }
 
@@ -49,6 +67,14 @@ public class BrandController {
         brandService.deleteBrand(id);
         return ApiResponse.<String>builder()
                 .result("Hãng đã được xóa")
+                .build();
+    }
+//    Delete Soft Brand
+    @DeleteMapping("/delete-soft-brand/{id}")
+    public ApiResponse<String> deletedSoftBrand(@PathVariable Long id){
+        brandService.deletedSoftBrand(id);
+        return ApiResponse.<String>builder()
+                .result("Brand đã được xóa")
                 .build();
     }
 

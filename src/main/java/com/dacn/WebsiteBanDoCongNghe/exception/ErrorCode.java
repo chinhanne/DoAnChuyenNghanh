@@ -64,6 +64,7 @@ public enum ErrorCode {
     PRICE_SALE_PRODUCT_NOT_NULL(1052, "Giá giảm của sản phẩm phải lớn hơn hoặc bằng 0 và không được bỏ trống.",HttpStatus.BAD_REQUEST),
     QUANTITY_PRODUCT_NOT_ENOUGH(1053, "Số lượng sản phẩm không đủ.",HttpStatus.BAD_REQUEST),
     FLASH_SALE_NOT_EXISTED(1054, "Không tìm thấy chương trình giảm giá.",HttpStatus.BAD_REQUEST),
+    ID_CATE_AND_BRAND_NOT_NULL(1055, "Thể loại hoặc hãng không tồn tại..",HttpStatus.BAD_REQUEST),
     ;
 
     int code;

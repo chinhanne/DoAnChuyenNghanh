@@ -16,4 +16,5 @@ public class BrandResponse {
     String description;
     LocalDateTime dateCreated;
     LocalDateTime dateUpdated;
+    Boolean isDelete;
 }

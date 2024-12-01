@@ -14,5 +14,6 @@ public interface ProductReponsitory extends JpaRepository<Product,Long> {
     List<Product> findByNameContainingIgnoreCase(String name);
     List<Product> findByCategoryIn(List<Category> categories);
     List<Product> findByBrandIn(List<Brand> brands);
-
+    List<Product> findByBrandIdAndIsDeleteFalse(Long brandId);
+    List<Product> findByCategoryIdAndIsDeleteFalse(Long categoryId);
 }

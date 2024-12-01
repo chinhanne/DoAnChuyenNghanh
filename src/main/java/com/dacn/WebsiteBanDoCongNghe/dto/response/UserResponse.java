@@ -25,4 +25,5 @@ public class UserResponse {
     Set<RoleResponse> roles;
     LocalDateTime dateCreated;
     LocalDateTime dateUpdated;
+    Boolean isStatus;
 }

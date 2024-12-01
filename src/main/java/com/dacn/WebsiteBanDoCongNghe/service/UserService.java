@@ -64,7 +64,7 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
-//    kiểm tra điều kiện của cá fields
+//    kiểm tra điều kiện của các fields
     public void validateRequestFields(UserInfoLoginGoogleCreateRequest request, User user) {
 //        hasText return true nếu password có khoong null
         if (StringUtils.hasText(user.getPassword())) {
@@ -200,6 +200,30 @@ public class UserService {
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(String id){
         userReponsitory.deleteById(id);
+    }
+
+//    Delete soft user
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteSoftUser(String id){
+        User user = userReponsitory.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        user.setIsStatus(true);
+        userReponsitory.save(user);
+    }
+
+//    Restore user
+    @PreAuthorize("hasRole('ADMIN')")
+    public void restoreUser(String id){
+        User user = userReponsitory.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        user.setIsStatus(false);
+        userReponsitory.save(user);
+    }
+
+//    Get all user is deleted soft
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<UserResponse> getAllUserIsDelete(){
+        return userReponsitory.findAll().stream()
+                .filter(user -> user.getIsStatus())
+                .map(userMapper::toUserResponse).toList();
     }
 
 }

@@ -19,4 +19,5 @@ public class FlashSaleResponse {
     FlashSaleStatus status;
     Long discountPercentage;
     List<FlashSaleProductResponse> flashSaleProductResponse;
+    Boolean isDelete;
 }

@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderResponse {
-
+    Long id;
     String userName;
     List<OrderDetailsResponse> orderDetails;
     String orderStatus;
@@ -24,4 +24,5 @@ public class OrderResponse {
     String statusPayment;
     String transactionId;
     String discountCode;
+    Boolean isDelete;
 }

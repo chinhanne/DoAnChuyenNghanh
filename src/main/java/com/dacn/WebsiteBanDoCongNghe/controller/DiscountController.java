@@ -3,7 +3,6 @@ package com.dacn.WebsiteBanDoCongNghe.controller;
 import com.dacn.WebsiteBanDoCongNghe.dto.request.DiscountRequest;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.ApiResponse;
 import com.dacn.WebsiteBanDoCongNghe.dto.response.DiscountResponse;
-import com.dacn.WebsiteBanDoCongNghe.entity.User;
 import com.dacn.WebsiteBanDoCongNghe.service.DiscountService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -34,6 +33,15 @@ public class DiscountController {
                 .build();
     }
 
+    //    Restore discount after delete soft
+    @PutMapping("/restore/{id}")
+    public ApiResponse<String> restoreDiscount(@PathVariable Long id) {
+        discountService.restoreDiscount(id);
+        return ApiResponse.<String>builder()
+                .result("Mã giảm giá đã được khôi phục thành công")
+                .build();
+    }
+
     @GetMapping
     public ApiResponse<List<DiscountResponse>> getAll(){
         return ApiResponse.<List<DiscountResponse>>builder()
@@ -48,11 +56,28 @@ public class DiscountController {
                 .build();
     }
 
+    //    Get all discount is delete soft
+    @GetMapping("/list-discount-delete-soft")
+    public ApiResponse<List<DiscountResponse>> listDiscountSoft(){
+        return ApiResponse.<List<DiscountResponse>>builder()
+                .result(discountService.getAllDiscountIsDelete())
+                .build();
+    }
+
     @DeleteMapping("/{id}")
     public ApiResponse<String> deleted(@PathVariable Long id){
         discountService.deleteDiscount(id);
         return ApiResponse.<String>builder()
                 .result("Mã giảm giá đã được xóa")
+                .build();
+    }
+
+    //    Delete soft user
+    @DeleteMapping("/soft-discount/{id}")
+    public ApiResponse<String> deleteDiscountSoft(@PathVariable Long id) {
+        discountService.deleteSoftDisCount(id);
+        return ApiResponse.<String>builder()
+                .result("Mã giảm giá đã được xóa thành công")
                 .build();
     }
 

@@ -172,4 +172,32 @@ public class ProductService {
         }
         productReponsitory.deleteById(id);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public void softDeleteProduct(Long id) {
+        Product product = productReponsitory.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
+        product.setIsDelete(true);
+        productReponsitory.save(product);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public void restoreProduct(Long id) {
+        Product product = productReponsitory.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED));
+        if(product.getIsBrandVisible() == false && product.getIsCategoryVisible() == false){
+            throw new AppException(ErrorCode.ID_CATE_AND_BRAND_NOT_NULL);
+        }
+        product.setIsDelete(false);
+        productReponsitory.save(product);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<ProductResponse> getAllProductsForIsDelete() {
+        return productReponsitory.findAll().stream()
+                .filter(product -> product.getIsDelete())
+                .map(productMapper::toProductResponse).toList();
+    }
+
+
 }

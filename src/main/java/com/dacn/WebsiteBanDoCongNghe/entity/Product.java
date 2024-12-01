@@ -44,6 +44,9 @@ public class Product {
     String card;
     String ram;
     String screen;
+    Boolean isDelete = false;
+    Boolean isBrandVisible = true;
+    Boolean isCategoryVisible = true;
 
 //    Khởi tạo thời gian tạo sản phẩm
     @PrePersist
@@ -51,6 +54,9 @@ public class Product {
         this.dateCreated = LocalDate.now();
         this.dateUpdated = LocalDate.now();
         this.priceSale = 0.0;
+        this.isDelete = false;
+        this.isBrandVisible = true;
+        this.isCategoryVisible = true;
         updateStatusBasedOnQuantity();
     }
 

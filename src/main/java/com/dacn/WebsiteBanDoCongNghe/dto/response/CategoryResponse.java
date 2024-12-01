@@ -16,4 +16,5 @@ public class CategoryResponse {
     String image;
     LocalDateTime dateCreated;
     LocalDateTime dateUpdated;
+    Boolean isDelete;
 }

@@ -21,4 +21,5 @@ public class DiscountResponse {
     DiscountScope discountScope;
     Integer maxUsagePerUser;
     Double minOrderAmount;
+    Boolean isDelete;
 }

@@ -45,6 +45,13 @@ public class OrdersController {
                 .build();
     }
 
+    @GetMapping("/history/orders-user")
+    public ApiResponse<List<OrderResponse>> getHistoryOrdersByUser(){
+        return ApiResponse.<List<OrderResponse>>builder()
+                .result(orderService.getHistoryOrderByUser())
+                .build();
+    }
+
     @PutMapping("/{orderId}")
     public ApiResponse<OrderResponse> updateOrderStatus(@PathVariable Long orderId, @RequestBody UpdateOrderRequest request){
         return ApiResponse.<OrderResponse>builder()

@@ -44,11 +44,13 @@ public class User {
 
     LocalDateTime dateCreated;
     LocalDateTime dateUpdated;
+    Boolean isStatus = false;
 
     @PrePersist
     public void prePersist() {
         this.dateCreated = LocalDateTime.now();
         this.dateUpdated = LocalDateTime.now();
+        this.isStatus = false;
     }
 
     @PreUpdate
