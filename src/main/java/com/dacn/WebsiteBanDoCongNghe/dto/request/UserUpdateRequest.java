@@ -27,5 +27,5 @@ public class UserUpdateRequest {
     Long gender;
     String address;
     String numberPhone;
-    List<String> roles;
+    MultipartFile imageFile;
 }

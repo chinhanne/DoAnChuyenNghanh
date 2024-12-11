@@ -122,7 +122,7 @@ public class UserService {
 
 
 //    Get user by id
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public UserResponse getUserById(String id){
         return userMapper.toUserResponse(userReponsitory.findById(id).orElseThrow(() -> new  AppException(ErrorCode.USER_NOT_EXISTED)));
     }
@@ -133,16 +133,6 @@ public class UserService {
         User user = userReponsitory.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         userMapper.updateUser(user,request);
-
-        if (request.getRoles() != null) {
-            var roles = roleReponsitory.findAllById(request.getRoles());
-
-            // Kiểm tra xem roles truyền vào từ request có hợp lệ không
-            if (roles.size() != request.getRoles().size()) {
-                throw new AppException(ErrorCode.ROLES_NOT_EXISTED);
-            }
-            user.setRoles(new HashSet<>(roles));
-        }
 
         if (imageFile != null && !imageFile.isEmpty()) {
             String imageUrl = fileStorageService.saveFile(imageFile);

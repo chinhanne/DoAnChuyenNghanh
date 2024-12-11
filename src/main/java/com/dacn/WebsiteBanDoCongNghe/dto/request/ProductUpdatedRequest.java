@@ -20,7 +20,6 @@ public class ProductUpdatedRequest {
     double price;
     @Min(value = 0, message = "QUANTITY_PRODUCT_NOT_NULL")
     Long quantity;
-    String status;
     String description;
     List<MultipartFile> images;
     Long categoryId;

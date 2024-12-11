@@ -14,6 +14,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FlashSaleProductResponse {
     Long productId;
+    String productName;
     Long flashSaleId;
     Double priceSale;
 }

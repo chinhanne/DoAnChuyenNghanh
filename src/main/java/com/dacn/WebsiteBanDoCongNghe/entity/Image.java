@@ -18,6 +18,6 @@ public class Image {
     String imagePath;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     Product product;
 }
