@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -16,7 +17,7 @@ public class DiscountResponse {
     Long id;
     String code;
     Double discountValue;
-    LocalDate expirationDate;
+    LocalDateTime expirationDate;
     DiscountType discountType;
     DiscountScope discountScope;
     Integer maxUsagePerUser;

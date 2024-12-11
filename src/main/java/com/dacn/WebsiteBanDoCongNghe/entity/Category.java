@@ -19,7 +19,6 @@ public class Category {
     Long id;
     @Column(name = "name", unique = true, columnDefinition = "VARCHAR(255) COLLATE utf8mb4_unicode_ci")
     String name;
-    String image;
     LocalDateTime dateCreated;
     LocalDateTime dateUpdated;
     Boolean isDelete = false;

@@ -33,4 +33,5 @@ public class UserCreationRequest {
     String address;
     @NotBlank(message = "NUMBERPHONE_NOT_NULL")
     String numberPhone;
+    MultipartFile imageFile;
 }

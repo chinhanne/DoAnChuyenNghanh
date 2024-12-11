@@ -30,7 +30,7 @@ public class UserController {
 //    Create User
     @PostMapping
     public ApiResponse<UserResponse> createUser(@ModelAttribute @Valid UserCreationRequest request,
-                                                @RequestParam MultipartFile imageFile) throws IOException {
+                                                MultipartFile imageFile) throws IOException {
         return ApiResponse.<UserResponse>builder()
                 .result(userService.createUser(request,imageFile))
                 .build();
@@ -78,20 +78,18 @@ public class UserController {
 //    Update User
     @PutMapping("/{id}")
     public ApiResponse<UserResponse> updateUser(@PathVariable String id,
-                                                @ModelAttribute @Valid UserUpdateRequest request,
-                                                @RequestParam(required = false) MultipartFile image) throws IOException {
+                                                @ModelAttribute @Valid UserUpdateRequest request, MultipartFile imageFile) throws IOException {
         return ApiResponse.<UserResponse>builder()
-                .result(userService.updateUser(id,request,image))
+                .result(userService.updateUser(id,request,imageFile))
                 .build();
     }
 
 //    Update myInfo
     @PutMapping("/myInfo")
-    public ApiResponse<UserResponse> updateMyInfo(@ModelAttribute @Valid UserUpdateRequest request,
-                                                  @RequestParam(required = false) MultipartFile image) throws IOException{
+    public ApiResponse<UserResponse> updateMyInfo(@ModelAttribute @Valid UserUpdateRequest request, MultipartFile imageFile) throws IOException{
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         return ApiResponse.<UserResponse>builder()
-                .result(userService.updateMyInfo(name,request,image))
+                .result(userService.updateMyInfo(name,request,imageFile))
                 .build();
     }
 

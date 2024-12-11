@@ -12,7 +12,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-//    Chuyen doi doi tuong UserCreationRequest thanh User
     User toUser(UserCreationRequest request);
 
 //    @MappingTarget chỉ định đối tượng đích (User) sẽ được cập nhật trực tiếp thay vì tạo mới.
@@ -27,7 +26,6 @@ public interface UserMapper {
     void updateUserPassword(@MappingTarget User user, UserUpdatePasswordRequest request);
 
 
-//    Chuyen doi tuong User thanh UserResponse
     UserResponse toUserResponse(User user);
 
 }

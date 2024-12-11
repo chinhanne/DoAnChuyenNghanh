@@ -24,18 +24,18 @@ public class CategoryController {
 
 //    Add category
     @PostMapping("/add")
-    public ApiResponse<CategoryResponse> created(@ModelAttribute @Valid CategoryRequest request, MultipartFile imageFile) throws IOException {
+    public ApiResponse<CategoryResponse> created(@ModelAttribute @Valid CategoryRequest request){
         return ApiResponse.<CategoryResponse>builder()
-                .result(categoryService.createdCategory(request, imageFile))
+                .result(categoryService.createdCategory(request))
                 .build();
     }
 
 //    Update Category
     @PutMapping("/{id}")
-    public ApiResponse<CategoryResponse> updated(@PathVariable Long id, @ModelAttribute @Valid CategoryRequest request,MultipartFile imageFile)
+    public ApiResponse<CategoryResponse> updated(@PathVariable Long id, @ModelAttribute @Valid CategoryRequest request)
             throws IOException{
         return ApiResponse.<CategoryResponse>builder()
-                .result(categoryService.updatedCategory(id,request, imageFile))
+                .result(categoryService.updatedCategory(id,request))
                 .build();
     }
 

@@ -27,6 +27,7 @@ public interface FlashSaleMapper {
 
     @Mapping(target = "flashSaleId", source = "flashSale.id")
     @Mapping(target = "productId", source = "product.id")
+    @Mapping(target = "productName", source = "product.name")
     FlashSaleProductResponse toFlashSaleProductResponse(FlashSaleProduct flashSaleProduct);
 
 }

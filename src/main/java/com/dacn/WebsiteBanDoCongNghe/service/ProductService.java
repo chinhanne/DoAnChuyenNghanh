@@ -14,6 +14,7 @@ import com.dacn.WebsiteBanDoCongNghe.exception.ErrorCode;
 import com.dacn.WebsiteBanDoCongNghe.mapper.ProductMapper;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.BrandRepository;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.CategoryReponsitory;
+import com.dacn.WebsiteBanDoCongNghe.reponsitory.ImageReponsitory;
 import com.dacn.WebsiteBanDoCongNghe.reponsitory.ProductReponsitory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class ProductService {
     ProductMapper productMapper;
     CategoryReponsitory categoryReponsitory;
     BrandRepository brandRepository;
+    ImageReponsitory imageReponsitory;
 
 //    Created Product
     @PreAuthorize("hasRole('ADMIN')")
